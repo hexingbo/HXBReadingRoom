@@ -22,6 +22,7 @@ import javax.inject.Inject;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * author:  ljy
@@ -34,8 +35,8 @@ import butterknife.ButterKnife;
  * 2.设置状态栏导航栏颜色。
  * 3.销毁Presenter层对View层的引用。
  * 4.实现IBaseActivity接口，以便通过Application.ActivityLifecycleCallbacks完成部分"基类操作"。
- *
- *
+ * <p>
+ * <p>
  * 由于Java的单继承的限制，DevRing库就不提供基类了，而是把一些基类操作通过Application.ActivityLifecycleCallbacks来完成。
  * 只需你的Activity实现IBaseActivity接口，并在Application中调用DevRing.init(this);
  * 即可完成以下"基类操作"：(具体请查看 {@link ActivityLifeCallback}）
@@ -43,8 +44,8 @@ import butterknife.ButterKnife;
  * 2.根据isUseEventBus()来决定EventBus的注册/注销
  * 3.Activity栈管理的入栈与出栈
  * 4.根据isUseFragment()来决定是否注册FragmentLifecycleCallbacks
- *
- *
+ * <p>
+ * <p>
  * 这种基类实现方式，参考自JessYan <a>https://www.jianshu.com/p/75a5c24174b2</a>
  */
 
@@ -55,10 +56,14 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Inject
     @Nullable
     protected P mPresenter;
+    protected Unbinder bind;
 
     protected abstract int getContentLayout();//返回页面布局id
+
     protected abstract void initView(Bundle savedInstanceState);//做视图相关的初始化工作
+
     protected abstract void initData(Bundle savedInstanceState);//做数据相关的初始化工作
+
     protected abstract void initEvent();//做监听事件相关的初始化工作
 
     @Override
@@ -67,7 +72,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         setTranspStatusBar(null);
         if (getContentLayout() != 0) {
             setContentView(getContentLayout());
-            ButterKnife.bind(this);
+            Unbinder bind = ButterKnife.bind(this);
         }
 //        initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
@@ -87,7 +92,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
                     .statusDepth(0)
                     .build(this)
                     .apply();
-        }else {
+        } else {
             ColorBar.newColorBuilder()
                     .applyNav(true)
                     .navColor(mColor)
@@ -116,6 +121,10 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             mPresenter.destroy();
             mPresenter = null;
         }
+
+        if (bind != null) {
+            bind.unbind();
+        }
     }
 
     /**
@@ -140,6 +149,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         }
         return statusBarHeight;
     }
+
     /**
      * 初始化状态栏相关，
      * PS: 设置全屏需要在调用super.onCreate(arg0);之前设置setIsFullScreen(true);否则在Android 6.0下非全屏的activity会出错;
@@ -166,5 +176,5 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
         }
     }
-    
+
 }

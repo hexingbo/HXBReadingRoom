@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.Toolbar
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/public_toolbar"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/public_height_50dp"
+    android:layout_height="@dimen/public_height_54dp"
     android:background="@color/colorPrimary"
     app:contentInsetStart="0dp">
 
     <RelativeLayout
         android:id="@+id/public_toolbar_back"
-        android:layout_width="@dimen/public_width_50dp"
+        android:layout_width="@dimen/public_width_54dp"
         android:layout_height="match_parent">
 
         <ImageView
@@ -36,9 +35,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:layout_marginRight="@dimen/public_mar_right_10dp"
         android:background="@color/transparent"
         android:gravity="center"
+        android:minWidth="@dimen/public_width_54dp"
         android:paddingLeft="@dimen/public_pad_left_10dp"
         android:paddingRight="@dimen/public_pad_right_10dp"
         android:textColor="@color/colorBlackToWhite"

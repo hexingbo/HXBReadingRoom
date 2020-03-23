@@ -11,6 +11,33 @@
         android:orientation="vertical">
 
         <include layout="@layout/public_layout_titlebar_and_stausview" />
+
+        <TextView
+            android:id="@+id/tv_manhua"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@mipmap/ic_manhua"
+            android:gravity="center"
+            android:text="漫画走廊"
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/public_font_32sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/public_height_10dp"
+            android:background="@color/colorWhiteSmoke" />
+
+        <TextView
+            android:id="@+id/tv_xiaoshuo"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@mipmap/ic_xiaoshuo"
+            android:gravity="center"
+            android:text="小说天地"
+            android:textColor="@color/colorDarkGreen"
+            android:textSize="@dimen/public_font_32sp" />
     </LinearLayout>
 
 

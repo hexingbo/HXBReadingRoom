@@ -62,6 +62,7 @@
     <dimen name="public_height_47dp">47dp</dimen>
     <dimen name="public_height_50dp">50dp</dimen>
     <dimen name="public_height_54dp">54dp</dimen>
+    <dimen name="public_height_56dp">56dp</dimen>
     <dimen name="public_height_60dp">60dp</dimen>
     <dimen name="public_height_64dp">64dp</dimen>
     <dimen name="public_height_67dp">67dp</dimen>
@@ -97,6 +98,8 @@
     <dimen name="public_width_34dp">34dp</dimen>
     <dimen name="public_width_40dp">40dp</dimen>
     <dimen name="public_width_50dp">50dp</dimen>
+    <dimen name="public_width_54dp">54dp</dimen>
+    <dimen name="public_width_56dp">56dp</dimen>
     <dimen name="public_width_60dp">60dp</dimen>
     <dimen name="public_width_67dp">67dp</dimen>
     <dimen name="public_width_77dp">77dp</dimen>

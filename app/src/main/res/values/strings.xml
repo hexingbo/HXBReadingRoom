@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">ReadingRoom</string>
+    <string name="app_name">阅读室</string>
+
+    <string name="loading">正在加载...</string>
+    <string name="loadFail">加载不出数据</string>
+    <string name="loadFail_reload">点击屏幕重试</string>
+    <string name="no_data">啥都没有</string>
+    <string name="load_all_finish">全部加载完毕</string>
+    
 </resources>

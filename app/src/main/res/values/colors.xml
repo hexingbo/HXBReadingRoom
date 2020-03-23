@@ -1,6 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <!--适配黑暗模式-->
+    <color name="colorPrimary">#008577</color><!--导航栏默认颜色-->
+    <color name="colorPrimaryDark">#00574B</color><!--通知栏默认颜色-->
+    <color name="colorWindowTextDefault">#000000</color><!--字体默认颜色-->
+    <color name="colorWindowBackground">#FFFFFF</color><!--view默认颜色-->
     <color name="colorAccent">#D81B60</color>
+    <color name="colorError">#CF6679</color>
+    <color name="colorSurface">#121212</color>
+    <color name="colorBackground">#000000</color>
+    <color name="colorOnSurface">#FFFFFF</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnError">#000000</color>
+
+    <!--单色颜色值 开始-->
+    <color name="transparent">#00000000</color>
+    <color name="transparent_db">#E0DBDBDB</color>
+    <color name="transparent_white">#F0FFFFFF</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorLightBlack">#1F1F1F</color>
+
+    <color name="colorGray">#999999</color>
+    <color name="colorLightGrey">#fefefe</color>
+    <color name="colorDarkGray">#A9A9A9</color>
+    <color name="colorWhiteSmoke">#F0F0F0</color>
+
+    <color name="colorRed">#FF0000</color>
+    <color name="colorLightRed">#FFB5B5</color>
+    <color name="colorOrange">#FFA500</color>
+    <color name="colorDarkOrange">#FF8C00</color>
+    <color name="colorYellow">#FACA0C</color>
+    <color name="colorLightYellow">#FBEFB5</color>
+
+    <color name="colorGreen">#1afa29</color>
+    <color name="colorDarkGreen">#006400</color>
+    <color name="colorLightGreen">#90EE90</color>
+
+    <color name="colorBlue">#0000FF</color>
+    <color name="colorDarkBlue">#00008B</color>
+    <color name="colorLightBLue">#ADD8E6</color>
+    <!--单色颜色值 结束-->
+
+    <!--渐变按钮的色值-->
+    <color name="color_startColor">#D81B60</color>
+    <color name="color_endColor">#fe6505</color>
+    <color name="color_shadow">#f6353d</color>
+
+    <color name="public_color_orange_light">#FACA0C</color>
+    <color name="color_dividingback">#E6E6E6</color>
+
+    <!--MD_dialog相关-->
+    <color name="card_background">#ffffff</color>
+    <color name="card_shadow">#10000000</color>
+    <color name="lite_blue">#ff359ff2</color>
+    <color name="window_background">#00000000</color>
+    <!--MD_dialog相关-->
+
+    <color name="colorBlackToWhite">#000000</color>
+    <color name="colorBlackToWhiteSmoke">#000000</color>
+    <color name="colorWhiteSmokeToLightGray">#F0F0F0</color>
+    <color name="colorBlackToGray">#000000</color>
+    <color name="colorBlackToYellow">#000000</color>
+    <color name="colorWhiteToBlack">#FFFFFF</color>
+    <color name="colorWhiteToLightBlack">#FFFFFF</color>
+    <color name="colorLightGrayToLightBlack">#F2F2F2</color>
+    <color name="colorLightGrayToBlack">#F2F2F2</color>
+    <color name="colorWhiteToGray">#FFFFFF</color>
+    <color name="colorGrayToWhite">#999999</color>
+    <color name="colorGrayToBlack">#999999</color>
+    <color name="colorGrayToRed">#999999</color>
+    <color name="colorYellowToRed">#FACA0C</color>
+    <color name="colorYellowToWhite">#FACA0C</color>
+    <color name="colorYellowToBlack">#FACA0C</color>
+    <color name="colorYellowToLightBlack">#FACA0C</color>
+    <color name="colorLightYellowToGray">#FBEFB5</color>
+
 </resources>

@@ -60,4 +60,6 @@ dependencies {
         //exclude module: 'greendao' //如果不使用数据库模块或者该模块不使用greendao实现，那么可以加上这句移除Devring库中对greendao的依赖以减小包体积
     }
 
+    api 'com.yanzhenjie:sofia:1.0.5'
+
 }

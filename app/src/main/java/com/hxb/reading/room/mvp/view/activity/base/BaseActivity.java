@@ -1,12 +1,18 @@
 package com.hxb.reading.room.mvp.view.activity.base;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.hxb.reading.room.R;
+import com.hxb.reading.room.utils.statusbar.StatusBarUtil;
 import com.ljy.devring.base.activity.ActivityLifeCallback;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.hxb.reading.room.mvp.presenter.base.BasePresenter;
@@ -58,17 +64,18 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setTranspStatusBar(null);
         if (getContentLayout() != 0) {
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
-        initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
+//        initBarColor();//初始化状态栏/导航栏颜色，需在设置了布局后再调用
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
         initData(savedInstanceState);//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
     }
 
+    //初始化状态栏/导航栏颜色，需在设置了布局后再调用
     private void initBarColor() {
         ViewGroup parent = findViewById(android.R.id.content);
         if (parent.getChildAt(0) instanceof DrawerLayout) {
@@ -110,4 +117,54 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             mPresenter = null;
         }
     }
+
+    /**
+     * 设置沉浸式
+     */
+    public int setTranspStatusBar(View titleBar) {
+        int statusBarHeight = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            statusBarHeight = StatusBarUtil.getStatusBarHeight(this);
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                //修改状态栏颜色和文字图标颜色
+                getWindow().setStatusBarColor(Color.TRANSPARENT);
+            }
+            if (titleBar != null) {
+                ViewGroup.LayoutParams params = titleBar.getLayoutParams();
+                params.height += statusBarHeight;
+                titleBar.setLayoutParams(params);
+                titleBar.setPadding(0, statusBarHeight, 0, 0);
+            }
+            initStatusBar();
+        }
+        return statusBarHeight;
+    }
+    /**
+     * 初始化状态栏相关，
+     * PS: 设置全屏需要在调用super.onCreate(arg0);之前设置setIsFullScreen(true);否则在Android 6.0下非全屏的activity会出错;
+     * SDK19：可以设置状态栏透明，但是半透明的SYSTEM_BAR_BACKGROUNDS会不好看；
+     * SDK21：可以设置状态栏颜色，并且可以清除SYSTEM_BAR_BACKGROUNDS，但是不能设置状态栏字体颜色（默认的白色字体在浅色背景下看不清楚）；
+     * SDK23：可以设置状态栏为浅色（SYSTEM_UI_FLAG_LIGHT_STATUS_BAR），字体就回反转为黑色。
+     * 为兼容目前效果，仅在SDK23才显示沉浸式。
+     */
+    private void initStatusBar() {
+        Window win = getWindow();
+
+        //KITKAT也能满足，只是SYSTEM_UI_FLAG_LIGHT_STATUS_BAR（状态栏字体颜色反转）只有在6.0才有效
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            win.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);//透明状态栏
+            // 状态栏字体设置为深色，SYSTEM_UI_FLAG_LIGHT_STATUS_BAR 为SDK23增加
+            win.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+            // 部分机型的statusbar会有半透明的黑色背景
+            win.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            win.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            win.setStatusBarColor(Color.TRANSPARENT);// SDK21
+
+            StatusBarUtil.setStatusTextColor(true, this);
+
+        }
+    }
+    
 }

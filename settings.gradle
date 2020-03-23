@@ -1,2 +1,2 @@
 include ':app', ':devring'
-rootProject.name='ReadingRoom'
+rootProject.name='HXBReadingRoom'

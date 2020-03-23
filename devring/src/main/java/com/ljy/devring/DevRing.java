@@ -19,6 +19,7 @@ import com.ljy.devring.other.ActivityListManager;
 import com.ljy.devring.other.OtherConfig;
 import com.ljy.devring.other.PermissionManager;
 import com.ljy.devring.other.RingLog;
+import com.ljy.devring.util.AppManagerUtil;
 import com.ljy.devring.util.Preconditions;
 import com.ljy.devring.util.RingToast;
 
@@ -41,6 +42,7 @@ public class DevRing {
      * 初始化操作
      */
     public static void init(Application application) {
+        AppManagerUtil.getInstance().init(application);
         mRingComponent = DaggerRingComponent.builder().application(application).build();//如果提示找不到DaggerRingComponent类，请重新编译下项目。
         application.registerActivityLifecycleCallbacks(mRingComponent.activityLifeCallback());
     }

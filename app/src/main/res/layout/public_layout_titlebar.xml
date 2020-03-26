@@ -41,7 +41,7 @@
         android:paddingLeft="@dimen/public_pad_left_10dp"
         android:paddingRight="@dimen/public_pad_right_10dp"
         android:textColor="@color/colorBlackToWhite"
-        android:textSize="@dimen/public_font_15sp"
+        android:textSize="@dimen/public_font_16sp"
         tools:text="Text" />
 
 </android.support.v7.widget.Toolbar>

@@ -27,7 +27,7 @@ public class StartActivity extends BaseActivity<StartPresenter> implements IStar
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    AppManagerUtil.jumpAndFinish(MainActivity.class);
+                    AppManagerUtil.jumpAndFinish(UserLoginActivity.class);
                 }
             },2000);
     }

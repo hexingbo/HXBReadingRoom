@@ -3,7 +3,7 @@ package com.hxb.wan.android.app;
 import android.app.Application;
 
 import com.hxb.wan.android.R;
-import com.hxb.wan.android.app.constant.UrlConstants;
+import com.hxb.wan.android.app.constant.Constants;
 import com.hxb.wan.android.mvp.model.bus.RxBusManager;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
@@ -43,7 +43,7 @@ public class ReadingRoomApplication extends Application {
 
         //网络请求模块
         DevRing.configureHttp()//配置retrofit
-                .setBaseUrl(UrlConstants.BASE_URL)//设置BaseUrl
+                .setBaseUrl(Constants.BASE_URL)//设置BaseUrl
                 .setConnectTimeout(15)//设置请求超时时长，单位秒
 //                .setMapHeader(mapHeader)//设置全局的header信息
 //                .setIsUseCache(true)//设置是否启用缓存，默认不启用

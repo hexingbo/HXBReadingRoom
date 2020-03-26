@@ -16,7 +16,6 @@ import com.hxb.wan.android.mvp.view.weight.MyEditDeleteTextView;
 import com.ljy.devring.util.DataSPUtils;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -30,10 +29,10 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
 
     @BindView(R.id.public_toolbar_back)
     RelativeLayout publicToolbarBack;
-    @BindView(R.id.et_user)
-    MyEditDeleteTextView etUser;
-    @BindView(R.id.et_pwd)
-    MyEditDeleteTextView etPwd;
+    @BindView(R.id.et_username)
+    MyEditDeleteTextView etUserName;
+    @BindView(R.id.et_password)
+    MyEditDeleteTextView etPassword;
     @BindView(R.id.public_toolbar_title)
     TextView publicToolbarTitle;
 
@@ -51,7 +50,7 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
 
     @Override
     protected void initData(Bundle bundle) {
-        etUser.setText(DataSPUtils.getString(Constants.SP_LoginUserName, ""));
+        etUserName.setText(DataSPUtils.getString(Constants.SP_LoginUserName, ""));
     }
 
     @Override
@@ -61,8 +60,13 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
 
 
     @OnClick(R.id.btn_login)
-    public void onViewClicked() {
-        mPresenter.goUserLogin(etUser.getText().toString().trim(), etPwd.getText().toString().trim());
+    public void onViewClicked_Login() {
+        mPresenter.goUserLogin(etUserName.getText().toString().trim(), etPassword.getText().toString().trim());
+    }
+
+    @OnClick(R.id.btn_register)
+    public void onViewClicked_Register() {
+        mPresenter.jumpUserRegisterActivity();
     }
 
 }

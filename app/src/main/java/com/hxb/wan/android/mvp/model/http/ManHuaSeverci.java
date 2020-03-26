@@ -31,4 +31,8 @@ public interface ManHuaSeverci {
     @FormUrlEncoded
     @POST("/user/login")
     Observable<HttpResult<UserBean>> goUserLogin(@Field("username") String username, @Field("password") String password);
+
+    @FormUrlEncoded
+    @POST("/user/register")
+    Observable<HttpResult<UserBean>> goUserRegister(@Field("username")String username,@Field("password") String password,@Field("repassword") String repassword);
 }

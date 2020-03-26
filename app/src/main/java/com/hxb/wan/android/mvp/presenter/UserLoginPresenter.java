@@ -48,9 +48,7 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginView, IUserLogin
                 .subscribe(new MyCommonObserver<HttpResult<UserBean>>() {
                     @Override
                     public void onResult(HttpResult<UserBean> result) {
-
-                        DataSPUtils.putString(Constants.SP_UserBean, new Gson().toJson(result.getData()));
-                        AppManagerUtil.jumpAndFinish(MainActivity.class);
+                        mIModel.jumpMainActivity(result.getData());
                     }
 
                     @Override
@@ -58,5 +56,12 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginView, IUserLogin
                         RingToast.show(httpThrowable.message);
                     }
                 });
+    }
+
+    /**
+     * 注册
+     */
+    public void jumpUserRegisterActivity() {
+        mIModel.jumpUserRegisterActivity();
     }
 }

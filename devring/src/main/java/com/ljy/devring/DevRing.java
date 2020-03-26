@@ -20,6 +20,7 @@ import com.ljy.devring.other.OtherConfig;
 import com.ljy.devring.other.PermissionManager;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.AppManagerUtil;
+import com.ljy.devring.util.DataSPUtils;
 import com.ljy.devring.util.Preconditions;
 import com.ljy.devring.util.RingToast;
 
@@ -27,7 +28,7 @@ import com.ljy.devring.util.RingToast;
  * author:  ljy
  * date:    2018/3/10
  * description: DevRing库核心操作类
- *
+ * <p>
  * DevRing详细使用说明：<a>https://www.jianshu.com/p/abede6623c58</a>
  */
 
@@ -74,6 +75,8 @@ public class DevRing {
         RingLog.init(mRingComponent.otherConfig().isShowRingLog());
         //RingToast
         RingToast.init(mRingComponent.application());
+        //DataSPUtils
+        DataSPUtils.init(mRingComponent.application(), mRingComponent.application().getPackageName());
     }
 
     /**
@@ -113,6 +116,7 @@ public class DevRing {
 
     /**
      * 配置事件总线模块，用于替换默认的EventBus
+     *
      * @param busManager 要替换EventBus的事件总线管理者
      */
     public static void configureBus(IBusManager busManager) {
@@ -138,6 +142,7 @@ public class DevRing {
 
     /**
      * 配置图片加载模块，用于替换默认的Glide
+     *
      * @param imageManager 要替换Glide的图片加载管理者
      */
     public static ImageConfig configureImage(IImageManager imageManager) {

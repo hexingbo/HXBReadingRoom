@@ -1,5 +1,8 @@
 package com.hxb.wan.android.di.module.activity;
 
+import android.app.Dialog;
+
+import com.hxb.wan.android.mvp.view.weight.ProgresDialog;
 import com.ljy.devring.di.scope.ActivityScope;
 
 import dagger.Module;
@@ -17,6 +20,12 @@ public class UserRegisterActivityModule {
 
     public UserRegisterActivityModule(IUserRegisterView iView) {
         mIView = iView;
+    }
+
+    @ActivityScope
+    @Provides
+    static Dialog provideDialog(IUserRegisterView view){
+        return new ProgresDialog(view.getActivity());
     }
 
     @ActivityScope

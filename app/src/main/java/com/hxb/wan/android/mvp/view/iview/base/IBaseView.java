@@ -1,5 +1,7 @@
 package com.hxb.wan.android.mvp.view.iview.base;
 
+import android.support.annotation.NonNull;
+
 /**
  * author:  ljy
  * date:    2017/9/15
@@ -9,5 +11,17 @@ package com.hxb.wan.android.mvp.view.iview.base;
  */
 
 public interface IBaseView {
+
+    void showLoading();
+
+    void hideLoading();
+
+    /**
+     * 显示信息
+     *
+     * @param message 消息内容, 不能为 {@code null}
+     */
+    void showMessage(@NonNull String message);
+    
 
 }

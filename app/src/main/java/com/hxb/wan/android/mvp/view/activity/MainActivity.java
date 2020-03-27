@@ -1,6 +1,7 @@
 package com.hxb.wan.android.mvp.view.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,4 +44,18 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     }
 
+    @Override
+    public void showLoading() {
+        
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+        
+    }
 }

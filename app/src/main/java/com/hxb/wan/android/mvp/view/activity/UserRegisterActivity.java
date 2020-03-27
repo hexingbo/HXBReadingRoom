@@ -1,19 +1,29 @@
 package com.hxb.wan.android.mvp.view.activity;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hxb.wan.android.R;
+import com.hxb.wan.android.app.constant.Constants;
 import com.hxb.wan.android.di.component.activity.DaggerUserRegisterActivityComponent;
 import com.hxb.wan.android.di.module.activity.UserRegisterActivityModule;
+import com.hxb.wan.android.mvp.model.entity.res.UserBean;
 import com.hxb.wan.android.mvp.presenter.UserRegisterPresenter;
 import com.hxb.wan.android.mvp.view.activity.base.BaseActivity;
 import com.hxb.wan.android.mvp.view.iview.IUserRegisterView;
 import com.hxb.wan.android.mvp.view.weight.MyEditDeleteTextView;
+import com.ljy.devring.util.AppManagerUtil;
+import com.ljy.devring.util.DataSPUtils;
+import com.ljy.devring.util.RingToast;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -24,6 +34,9 @@ import butterknife.OnClick;
  * =============================================
  */
 public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> implements IUserRegisterView {
+
+    @Inject
+    Dialog mDialog;
 
     @BindView(R.id.public_toolbar_title)
     TextView publicToolbarTitle;
@@ -60,7 +73,7 @@ public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> im
         switch (view.getId()) {
             case R.id.public_toolbar_back:
             case R.id.btn_login:
-                mPresenter.jumpUserLoginActivity();
+                jumpUserLoginActivity();
                 break;
             case R.id.btn_register:
                 mPresenter.goUserRegister(etUsername.getText().toString().trim(),
@@ -71,5 +84,35 @@ public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> im
         }
     }
 
+    @Override
+    public Activity getActivity() {
+        return this;
+    }
+
+    @Override
+    public void showLoading() {
+        mDialog.show();
+    }
+
+    @Override
+    public void hideLoading() {
+        mDialog.dismiss();
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+        RingToast.show(message);
+    }
+
+    @Override
+    public void jumpMainActivity(UserBean userBean) {
+        DataSPUtils.putString(Constants.SP_UserBean, new Gson().toJson(userBean));
+        AppManagerUtil.jumpAndFinish(MainActivity.class);
+    }
+
+    @Override
+    public void jumpUserLoginActivity() {
+        AppManagerUtil.jumpAndFinish(UserLoginActivity.class);
+    }
 
 }

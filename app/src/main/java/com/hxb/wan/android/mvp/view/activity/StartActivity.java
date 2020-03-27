@@ -2,6 +2,7 @@ package com.hxb.wan.android.mvp.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.mvp.presenter.StartPresenter;
@@ -37,4 +38,18 @@ public class StartActivity extends BaseActivity<StartPresenter> implements IStar
 
     }
 
+    @Override
+    public void showLoading() {
+        
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showMessage(@NonNull String message) {
+        
+    }
 }

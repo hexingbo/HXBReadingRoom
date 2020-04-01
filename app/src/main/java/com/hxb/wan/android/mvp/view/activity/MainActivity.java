@@ -4,8 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.hxb.wan.android.R;
@@ -13,10 +19,16 @@ import com.hxb.wan.android.di.component.activity.DaggerMainActivityComponent;
 import com.hxb.wan.android.di.module.activity.MainActivityModule;
 import com.hxb.wan.android.mvp.presenter.MainPresenter;
 import com.hxb.wan.android.mvp.view.activity.base.BaseActivity;
+import com.hxb.wan.android.mvp.view.fragment.NewArticleFragment;
+import com.hxb.wan.android.mvp.view.fragment.NewProjectFragment;
 import com.hxb.wan.android.mvp.view.fragment.base.BaseFragment;
 import com.hxb.wan.android.mvp.view.iview.IMainView;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.LoadOption;
+import com.ljy.devring.util.RingToast;
+
+import javax.inject.Inject;
+import javax.inject.Named;
 
 import butterknife.BindColor;
 import butterknife.BindString;
@@ -40,6 +52,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     String mStrNewArticle;
     @BindString(R.string.new_project)
     String mStrNewProject;
+    @BindString(R.string.exit_confirm)
+    String mStrExitConfirm;
 
     @BindColor(R.color.colorLightBlack)
     int mColorBlack;
@@ -47,18 +61,46 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     int mColorPrimary;
 
     private ImageView mIvAvatar;
+
+    @Inject
+    @Named("NewArticle")
+    NewArticleFragment mNewArticleFragment;//最新文字的fragment
+    @Inject
+    @Named("NewProject")
+    NewProjectFragment mNewProjectFragment;//最新项目的fragment
+
     private BaseFragment mCurrentFragment;//当前展示的Fragment
-    private long mExitTime;
     private int mCurrentIndex;//记录当前显示的fragment索引，用于配置变化重建后恢复页面
-    
+
+    private long mExitTime;
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("index", mCurrentIndex);
+    }
+
     @Override
     protected int getContentLayout() {
         return R.layout.activity_main;
     }
 
     @Override
-    protected void initView(Bundle bundle) {
+    protected void initView(Bundle savedInstanceState) {
         DaggerMainActivityComponent.builder().mainActivityModule(new MainActivityModule(this)).build().inject(this);
+
+        //如果经过了配置变化而重建(如横竖屏切换)，则不使用新建的Fragment。
+        if (savedInstanceState != null) {
+            NewArticleFragment oldPlayingFragment = (NewArticleFragment) getSupportFragmentManager().findFragmentByTag("NewArticle");
+            if (oldPlayingFragment != null) {
+                mNewArticleFragment = oldPlayingFragment;
+            }
+            NewProjectFragment oldCommingFragment = (NewProjectFragment) getSupportFragmentManager().findFragmentByTag("NewProject");
+            if (oldCommingFragment != null) {
+                mNewProjectFragment = oldCommingFragment;
+            }
+            mCurrentIndex = savedInstanceState.getInt("index");
+        }
 
         //如果调用了setSupportActionBar，那就必须在setSupportActionBar之前将标题置为空字符串，否则设置具体标题会无效
         mToolbar.setTitle("");
@@ -74,23 +116,139 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
         //侧滑抽屉里的圆形头像，比较特殊，无法通过butterknife初始化
         mIvAvatar = mNavigationView.getHeaderView(0).findViewById(R.id.iv_avatar);
-        DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
-        
     }
 
     @Override
     protected void initData(Bundle bundle) {
-        
+        switch (mCurrentIndex) {
+            case 0:
+                setDefaultFragment(mNewArticleFragment, "NewArticle");//设置默认的Fragment
+                break;
+            case 1:
+                setDefaultFragment(mNewProjectFragment, "NewProject");//设置默认的Fragment
+                break;
+        }
+
+        setUserHead("");
+    }
+
+    /**
+     * 设置用户头像
+     *
+     * @param userHead
+     */
+    private void setUserHead(String userHead) {
+        DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
     }
 
     @Override
     protected void initEvent() {
-
+        setTabMenuListener();
+        setNavigationListener();
+        setDrawerLayoutListener();
     }
+
+    ////设置DrawerLayout滑动的相关监听
+    private void setDrawerLayoutListener() {
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawerToggle.syncState();
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+        mDrawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                View mContent = mDrawerLayout.getChildAt(0);
+                mContent.setTranslationX(drawerView.getMeasuredWidth() * slideOffset);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+            }
+        });
+    }
+
+    //侧边栏点击事件
+    private void setNavigationListener() {
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.nav_item_collect:
+                        //收藏夹
+                        break;
+                    case R.id.nav_item_about_us:
+                        //关于我们
+                        break;
+                    case R.id.nav_item_login_out:
+                        //退出登录
+                        break;
+                }
+                //收起侧边栏
+                mDrawerLayout.closeDrawers();
+
+                return false;//true则点击的菜单项会变成选中状态,，false则不会变成选中状态
+            }
+        });
+
+        mIvAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showMessage("头像被点击了");
+            }
+        });
+    }
+
+    //菜单点击切换
+    private void setTabMenuListener() {
+        mTlHome.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch (tab.getPosition()) {
+                    case 0:
+                        mCurrentIndex = 0;
+                        clickNewArticle();
+                        break;
+
+                    case 1:
+                        mCurrentIndex = 1;
+                        clickNewProject();
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+    }
+
 
     @Override
     public void showLoading() {
-        
+
     }
 
     @Override
@@ -100,6 +258,64 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
 
     @Override
     public void showMessage(@NonNull String message) {
-        
+        RingToast.show(message);
+    }
+
+    //设置默认Fragment
+    private void setDefaultFragment(BaseFragment fragment, String tag) {
+        if (!fragment.isAdded()) {
+            getSupportFragmentManager().beginTransaction().add(R.id.fl_home, fragment, tag).commit();
+        }
+        mCurrentFragment = fragment;
+        mCurrentFragment.setUserVisibleHint(true);
+    }
+
+    //显示“最新文章”Fragment
+    private void clickNewArticle() {
+        addOrShowFragment(getSupportFragmentManager().beginTransaction(), mNewArticleFragment, "NewArticle");
+    }
+
+    //显示“最新项目”Fragment
+    private void clickNewProject() {
+        addOrShowFragment(getSupportFragmentManager().beginTransaction(), mNewProjectFragment, "NewProject");
+    }
+
+    //显示或隐藏Fragment，用于切换Fragment的展示
+    private void addOrShowFragment(FragmentTransaction transaction, BaseFragment fragment, String tag) {
+        if (mCurrentFragment == fragment) return;
+
+        if (!fragment.isAdded()) {
+            transaction.hide(mCurrentFragment).add(R.id.fl_home, fragment, tag).commit();
+        } else {
+            transaction.hide(mCurrentFragment).show(fragment).commit();
+        }
+
+        //不与ViewPager嵌套的话，需要显式调用setUserVisibleHint才能使用懒加载功能。
+        mCurrentFragment.setUserVisibleHint(false);
+        mCurrentFragment = fragment;
+        mCurrentFragment.setUserVisibleHint(true);
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_BACK://返回键
+                if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    //侧边栏展开则收起
+                    mDrawerLayout.closeDrawer(GravityCompat.START);
+                } else if (System.currentTimeMillis() - mExitTime > 2000) {
+                    //两次点击返回键大于2s则提示
+                    showMessage(mStrExitConfirm);
+                    mExitTime = System.currentTimeMillis();
+                } else {
+                    //退出程序
+                    DevRing.activityListManager().exitApp();
+                }
+                return true;
+            default:
+                return super.onKeyDown(keyCode, event);
+        }
+
     }
 }

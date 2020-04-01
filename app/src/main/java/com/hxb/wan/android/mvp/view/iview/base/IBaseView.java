@@ -16,11 +16,6 @@ public interface IBaseView {
 
     void hideLoading();
 
-    /**
-     * 显示信息
-     *
-     * @param message 消息内容, 不能为 {@code null}
-     */
     void showMessage(@NonNull String message);
     
 

@@ -9,5 +9,12 @@
 
     <string name="new_article">最新博文</string>
     <string name="new_project">最新项目</string>
+    
+    <!-- drawerlayout -->
+    <string name="open">打开</string>
+    <string name="close">关闭</string>
+    
+    <string name="exit_confirm">再点一次退出程序</string>
+    
 
 </resources>

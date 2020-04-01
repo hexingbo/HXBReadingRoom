@@ -12,7 +12,13 @@ import com.hxb.wan.android.R;
 
 import android.support.annotation.NonNull;
 
-
+/**
+ * =============================================
+ * 作    者：贺兴波
+ * 时    间：2020/4/1
+ * 描    述：NewProjectFragment 最新项目
+ * =============================================
+ */
 public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implements INewProjectView {
 
     @Override

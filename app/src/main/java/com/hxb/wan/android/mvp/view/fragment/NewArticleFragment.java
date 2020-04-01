@@ -11,7 +11,7 @@ import com.hxb.wan.android.mvp.view.iview.INewArticleView;
  * =============================================
  * 作    者：贺兴波
  * 时    间：2020/4/1
- * 描    述：最新文章 NewArticleFragment
+ * 描    述： NewArticleFragment 最新文章
  * =============================================
  */
 public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implements INewArticleView {
@@ -52,7 +52,7 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
 
     @Override
     public void showMessage(@NonNull String message) {
-        
+
     }
 
 }

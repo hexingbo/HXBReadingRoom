@@ -17,15 +17,24 @@ import android.widget.ImageView;
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.activity.DaggerMainActivityComponent;
 import com.hxb.wan.android.di.module.activity.MainActivityModule;
+import com.hxb.wan.android.mvp.model.entity.res.BannerData;
 import com.hxb.wan.android.mvp.presenter.MainPresenter;
 import com.hxb.wan.android.mvp.view.activity.base.BaseActivity;
 import com.hxb.wan.android.mvp.view.fragment.NewArticleFragment;
 import com.hxb.wan.android.mvp.view.fragment.NewProjectFragment;
 import com.hxb.wan.android.mvp.view.fragment.base.BaseFragment;
 import com.hxb.wan.android.mvp.view.iview.IMainView;
+import com.hxb.wan.android.utils.GlideImageLoader;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.LoadOption;
 import com.ljy.devring.util.RingToast;
+import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -45,6 +54,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     Toolbar mToolbar;
     @BindView(R.id.tl_home)
     TabLayout mTlHome;//顶部选项卡
+    @BindView(R.id.head_banner)
+    Banner mBanner;
 
     @BindString(R.string.app_name)
     String mStrTitle;
@@ -59,6 +70,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     int mColorBlack;
     @BindColor(R.color.colorPrimary)
     int mColorPrimary;
+
+
+    private List<String> mBannerTitleList;
+    private List<String> mBannerUrlList;
 
     private ImageView mIvAvatar;
 
@@ -130,6 +145,43 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         }
 
         setUserHead("");
+        mPresenter.getBannerList();
+    }
+
+    @Override
+    public void getBannerListSuccess(List<BannerData> bannerDataList) {
+        mBannerTitleList = new ArrayList<>();
+        List<String> bannerImageList = new ArrayList<>();
+        mBannerUrlList = new ArrayList<>();
+        for (BannerData bannerData : bannerDataList) {
+            mBannerTitleList.add(bannerData.getTitle());
+            bannerImageList.add(bannerData.getImagePath());
+            mBannerUrlList.add(bannerData.getUrl());
+        }
+        //设置banner样式
+        mBanner.setBannerStyle(BannerConfig.NUM_INDICATOR_TITLE);
+        //设置图片加载器
+        mBanner.setImageLoader(new GlideImageLoader());
+        //设置图片集合
+        mBanner.setImages(bannerImageList);
+        //设置banner动画效果
+        mBanner.setBannerAnimation(Transformer.DepthPage);
+        //设置标题集合（当banner样式有显示title时）
+        mBanner.setBannerTitles(mBannerTitleList);
+        //设置自动轮播，默认为true
+        mBanner.isAutoPlay(true);
+        //设置轮播时间
+        mBanner.setDelayTime(bannerDataList.size() * 400);
+        //设置指示器位置（当banner模式中有指示器时）
+        mBanner.setIndicatorGravity(BannerConfig.CENTER);
+        mBanner.setOnBannerListener(new OnBannerListener() {
+            @Override
+            public void OnBannerClick(int position) {
+
+            }
+        });
+        //banner设置方法全部调用完毕时最后调用
+        mBanner.start();
     }
 
     /**
@@ -318,4 +370,21 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         }
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mBanner != null) {
+            mBanner.startAutoPlay();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mBanner != null) {
+            mBanner.stopAutoPlay();
+        }
+    }
+
 }

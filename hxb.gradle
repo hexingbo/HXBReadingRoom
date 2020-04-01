@@ -1,0 +1,92 @@
+ext {
+
+    android = [
+            compileSdkVersion: 28,
+            buildToolsVersion: "28.0.3",
+            minSdkVersion    : 19,
+            targetSdkVersion : 28,
+            versionCode      : 55,
+            versionName      : "1.5.5"
+    ]
+
+    version = [
+            androidSupportSdkVersion: "28.0.0",
+            retrofitSdkVersion      : "2.3.0",
+            daggerSdkVersion        : "2.14.1",
+            glideSdkVersion         : "4.4.0",
+            butterknifeSdkVersion   : "8.8.1",
+            espressoSdkVersion      : "3.0.2",
+            canarySdkVersion        : "1.6.2",
+            rxlifecycle2SdkVersion  : "2.2.1",
+    ]
+
+    dependencies = [
+            //support
+            "appcompat-v7"            : "com.android.support:appcompat-v7:${version["androidSupportSdkVersion"]}",
+            "design"                  : "com.android.support:design:${version["androidSupportSdkVersion"]}",
+            "palette"                 : "com.android.support:palette-v7:${version["androidSupportSdkVersion"]}",
+            "support-v4"              : "com.android.support:support-v4:${version["androidSupportSdkVersion"]}",
+            "cardview-v7"             : "com.android.support:cardview-v7:${version["androidSupportSdkVersion"]}",
+            "annotations"             : "com.android.support:support-annotations:${version["androidSupportSdkVersion"]}",
+            "recyclerview-v7"         : "com.android.support:recyclerview-v7:${version["androidSupportSdkVersion"]}",
+            "percent"                 : "com.android.support:percent:${version["androidSupportSdkVersion"]}",
+            "dynamic"                 : "com.android.support:support-dynamic-animation:${version["androidSupportSdkVersion"]}",
+            "multidex"                : "com.android.support:multidex:1.0.2",
+            "constraint-layout"       : "com.android.support.constraint:constraint-layout:1.1.3",
+
+            //test
+            "junit"                   : "junit:junit:4.12",
+            "androidJUnitRunner"      : "android.support.test.runner.AndroidJUnitRunner",
+            "runner"                  : "com.android.support.test:runner:1.0.2",
+            "espresso-core"           : "com.android.support.test.espresso:espresso-core:${version["espressoSdkVersion"]}",
+            "espresso-contrib"        : "com.android.support.test.espresso:espresso-contrib:${version["espressoSdkVersion"]}",
+            "espresso-intents"        : "com.android.support.test.espresso:espresso-intents:${version["espressoSdkVersion"]}",
+            "logger"                  : "com.orhanobut:logger:2.2.0",
+            //LeakCanary是Square公司基于MAT开源的一个工具，用来检测Android App中的内存泄露问题官方地址：https://github.com/square/leakcanary。
+            "canary-debug"            : "com.squareup.leakcanary:leakcanary-android:${version["canarySdkVersion"]}",
+            "canary-release"          : "com.squareup.leakcanary:leakcanary-android-no-op:${version["canarySdkVersion"]}",
+
+            //RX
+            "rxjava2"                 : "io.reactivex.rxjava2:rxjava:2.2.3",
+            "rxandroid2"              : "io.reactivex.rxjava2:rxandroid:2.1.0",
+            "rxlifecycle2"            : "com.trello.rxlifecycle2:rxlifecycle:${version["rxlifecycle2SdkVersion"]}",
+            "rxlifecycle2-android"    : "com.trello.rxlifecycle2:rxlifecycle-android:${version["rxlifecycle2SdkVersion"]}",
+            "rxpermissions2"          : "com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar",   
+
+            //Retrofit2
+            "retrofit"                : "com.squareup.retrofit2:retrofit:${version["retrofitSdkVersion"]}",
+            "retrofit-converter-gson" : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
+            "retrofit-adapter-rxjava2": "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
+            "okhttp3"                  : "com.squareup.okhttp3:okhttp:3.11.0",
+
+            //dagger2依赖注入
+            "dagger"                  : "com.google.dagger:dagger:${version["daggerSdkVersion"]}",
+            "dagger-compiler"         : "com.google.dagger:dagger-compiler:${version["daggerSdkVersion"]}",
+
+            //Glide图片加载
+            "glide"                   : "com.github.bumptech.glide:glide:${version["glideSdkVersion"]}",
+            "glide-compiler"          : "com.github.bumptech.glide:compiler:${version["glideSdkVersion"]}",
+            "glide-transformations"   : "jp.wasabeef:glide-transformations:3.1.1@aar",//图片转换工具
+
+            //greenDAO数据库
+            "greendao"                : "org.greenrobot:greendao:3.2.0",
+
+            //EventBus事件总线
+            "eventbus"                : "org.greenrobot:eventbus:3.0.0",
+            "eventbus-proce "         : "org.greenrobot:eventbus-annotation-processor:3.0.1  ",//用于eventbus在编译时生成加速用的Index文件
+
+            //butterknife
+            "butterknife"             : "com.jakewharton:butterknife:${version["butterknifeSdkVersion"]}",
+            "butterknife-compiler"    : "com.jakewharton:butterknife-compiler:${version["butterknifeSdkVersion"]}",
+
+            //Android沉浸式效果的实现  "状态栏和导航 设置颜色、渐变色、图片、透明度、内容入侵和状态栏深色字体；兼容竖屏、横屏  "当屏幕旋转时会自动适配。
+            "yanzhenjie-sofia"        : "com.yanzhenjie:sofia:1.0.5",
+
+            "gson"                    : "com.google.code.gson:gson:2.8.5",
+
+            //阿里巴巴的路由框架
+            "arouter"                 : "com.alibaba:arouter-api:1.5.0",
+            "arouter-compiler"        : "com.alibaba:arouter-compiler:1.2.2",
+
+    ]
+}

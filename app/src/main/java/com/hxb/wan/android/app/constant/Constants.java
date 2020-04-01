@@ -9,7 +9,7 @@ package com.hxb.wan.android.app.constant;
  */
 public interface Constants {
 
-    String BASE_URL = "https://www.wanandroid.com";
+    String BASE_URL = "https://www.wanandroid.com/";
 
     String SP_UserBean="UserBean";
     String SP_LoginUserName="LoginUserName";

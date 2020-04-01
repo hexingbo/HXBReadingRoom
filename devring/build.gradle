@@ -1,14 +1,19 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+  
+    compileOptions {
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1"
-
+        minSdkVersion rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
     }
 
     buildTypes {
@@ -25,36 +30,84 @@ android {
 
 dependencies {
 
+    //support
+    api(rootProject.ext.dependencies["support-v4"]) {
+        exclude module: 'support-annotations'
+    }
+    api(rootProject.ext.dependencies["appcompat-v7"]) {
+        exclude module: 'support-annotations'
+    }
+    api rootProject.ext.dependencies["design"]
+    api(rootProject.ext.dependencies["recyclerview-v7"]) {
+        exclude module: 'support-annotations'
+    }
+    api rootProject.ext.dependencies["annotations"]
+    
     //Rxjava2 & RxAndroid2
-    api 'io.reactivex.rxjava2:rxjava:2.1.6'
-    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    //rx
+    api rootProject.ext.dependencies["rxjava2"]
+    api(rootProject.ext.dependencies["rxandroid2"]) {
+        exclude module: 'rxjava'
+    }
 
     //RxPermission权限申请
-    api 'com.tbruyelle.rxpermissions2:rxpermissions:0.9.5@aar'
+    api(rootProject.ext.dependencies["rxpermissions2"]) {
+        exclude module: 'rxjava'
+        exclude module: 'support-annotations'
+    }
 
     //RxLifeCycle2
-    api 'com.trello.rxlifecycle2:rxlifecycle:2.2.1'
-    api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1@aar'
-
-    //Retrofit2
-    api 'com.squareup.retrofit2:retrofit:2.3.0'
-    api 'com.squareup.retrofit2:converter-gson:2.3.0'
-    api 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    api(rootProject.ext.dependencies["rxlifecycle2"]) {
+        exclude module: 'rxjava'
+        exclude module: 'jsr305'
+    }
+    api(rootProject.ext.dependencies["rxlifecycle2-android"]) {
+        exclude module: 'support-annotations'
+        exclude module: 'rxjava'
+        exclude module: 'rxandroid'
+        exclude module: 'rxlifecycle'
+    }
+    api rootProject.ext.dependencies["okhttp3"]
+    //network
+    api(rootProject.ext.dependencies["retrofit"]) {
+        exclude module: 'okhttp'
+        exclude module: 'okio'
+    }
+    implementation(rootProject.ext.dependencies["retrofit-converter-gson"]) {
+        exclude module: 'gson'
+        exclude module: 'okhttp'
+        exclude module: 'okio'
+        exclude module: 'retrofit'
+    }
+    implementation(rootProject.ext.dependencies["retrofit-adapter-rxjava2"]) {
+        exclude module: 'rxjava'
+        exclude module: 'okhttp'
+        exclude module: 'retrofit'
+        exclude module: 'okio'
+    }
 
     //dagger2依赖注入
-    api 'com.google.dagger:dagger:2.14.1'
-    annotationProcessor 'com.google.dagger:dagger-compiler:2.14.1'
+    api rootProject.ext.dependencies["dagger"]
+    annotationProcessor rootProject.ext.dependencies["dagger-compiler"]
 
     //Glide图片加载
-    api 'com.github.bumptech.glide:glide:4.4.0'
-    api 'jp.wasabeef:glide-transformations:3.1.1@aar'//图片转换工具
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.4.0'
+    api rootProject.ext.dependencies["glide"]
+    api rootProject.ext.dependencies["glide-transformations"]
+    annotationProcessor(rootProject.ext.dependencies["glide-compiler"]) {
+        exclude module: 'jsr305'
+    }
+    api rootProject.ext.dependencies["gson"]
+
+    api rootProject.ext.dependencies["yanzhenjie-sofia"]
 
     //greenDAO数据库
-    api 'org.greenrobot:greendao:3.2.0'
+    api rootProject.ext.dependencies["greendao"]
 
     //EventBus事件总线
-    api 'org.greenrobot:eventbus:3.0.0'
+    api rootProject.ext.dependencies["eventbus"]
+    
+    api rootProject.ext.dependencies["butterknife"]
+    annotationProcessor rootProject.ext.dependencies["butterknife-compiler"]
 
 }
 

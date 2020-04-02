@@ -14,6 +14,7 @@ public interface INewArticleModel extends IBaseModel {
 
     //获取置顶文章
     Observable<HttpResult<List<WxArticleDataBean>>> getNewArticleTopList();
+
     //获取最新文章
     Observable<HttpResult<WxArticleListBean>> getNewArticleList(int page);
 

@@ -63,6 +63,7 @@ public class HttpManager {
 
     /**
      * 获取指定的网络请求Api接口
+     *
      * @param serviceClass ApiService的类型
      * @return 相应的ApiService
      */
@@ -85,8 +86,9 @@ public class HttpManager {
 
     /**
      * 普通的网络api请求，会根据全局配置判断是否使用失败重试机制
-     * @param observable 请求
-     * @param observer 请求回调
+     *
+     * @param observable  请求
+     * @param observer    请求回调
      * @param transformer 生命周期控制，如果为null，则不进行生命周期控制
      */
     public void commonRequest(Observable observable, Observer observer, LifecycleTransformer transformer) {
@@ -96,11 +98,12 @@ public class HttpManager {
 
     /**
      * 普通的网络api请求，会根据所传参数来使用失败重试机制
-     * @param observable 请求
-     * @param observer 请求回调
-     * @param transformer 生命周期控制，如果为null，则不进行生命周期控制
+     *
+     * @param observable     请求
+     * @param observer       请求回调
+     * @param transformer    生命周期控制，如果为null，则不进行生命周期控制
      * @param timeRetryDelay 失败后重试的延迟时长
-     * @param maxRetryCount 失败后重试的最大次数
+     * @param maxRetryCount  失败后重试的最大次数
      */
     public void commonRequest(Observable observable, Observer observer, LifecycleTransformer transformer, int timeRetryDelay, int maxRetryCount) {
         handleRetry(handleThread(handleLife(observable, transformer)), true, timeRetryDelay, maxRetryCount).subscribe(observer);
@@ -108,12 +111,13 @@ public class HttpManager {
 
     /**
      * 涉及上传的网络请求
-     * @param observable 请求
+     *
+     * @param observable     请求
      * @param uploadObserver 请求回调（包含了上传进度的回调）
      *                       如果不需要监听进度，则使用空的构造函数
      *                       如果是普通地监听某个上传的进度，则使用一个参数的构造函数，并传入上传的URL地址
      *                       如果是使用同一个URL但根据请求参数的不同而上传不同资源的情况，则使用两个参数的构造函数，第一个参数传入上传的URL地址，第二参数传入自定义的字符串加以区分。
-     * @param transformer 生命周期控制，如果为null，则不进行生命周期控制
+     * @param transformer    生命周期控制，如果为null，则不进行生命周期控制
      */
     public void uploadRequest(Observable observable, UploadObserver uploadObserver, LifecycleTransformer transformer) {
         if (!TextUtils.isEmpty(uploadObserver.getUploadUrl())) {
@@ -128,13 +132,14 @@ public class HttpManager {
 
     /**
      * 涉及下载的网络请求
-     * @param fileSave 下载后的内容将保存至该file
-     * @param observable 请求
+     *
+     * @param fileSave         下载后的内容将保存至该file
+     * @param observable       请求
      * @param downloadObserver 请求回调（包含了下载进度的回调）
      *                         如果不需要监听进度，则使用空的构造函数
      *                         如果是普通地监听某个下载的进度，则使用一个参数的构造函数，并传入下载的URL地址
      *                         如果是使用同一个URL但根据请求参数的不同而下载不同资源的情况，则使用两个参数的构造函数，第一个参数传入下载的URL地址，第二参数传入自定义的字符串加以区分。
-     * @param transformer 生命周期控制，如果为null，则不进行生命周期控制
+     * @param transformer      生命周期控制，如果为null，则不进行生命周期控制
      */
     public void downloadRequest(File fileSave, Observable observable, DownloadObserver downloadObserver, LifecycleTransformer transformer) {
         if (!TextUtils.isEmpty(downloadObserver.getDownloadUrl())) {
@@ -245,7 +250,8 @@ public class HttpManager {
 
     /**
      * 用于生成 上传多个文件用的Map<String, RequestBody>
-     * @param map 保存了filekey和file的map
+     *
+     * @param map       保存了filekey和file的map
      * @param mediaType 上传文件的MediaType
      * @return 上传多个文件用的Map<String, RequestBody>
      */

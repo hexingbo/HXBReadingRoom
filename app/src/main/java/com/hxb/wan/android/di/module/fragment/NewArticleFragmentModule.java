@@ -58,7 +58,7 @@ public class NewArticleFragmentModule {
 
     @FragmentScope
     @Provides
-    NewArticleAdapter provideNewArticleAdapter(INewArticleView iView) {
-        return new NewArticleAdapter(iView.getDataList(), iView.getActivity());
+    NewArticleAdapter provideNewArticleAdapter(List<WxArticleDataBean> list,INewArticleView iView) {
+        return new NewArticleAdapter(list, iView.getActivity());
     }
 }

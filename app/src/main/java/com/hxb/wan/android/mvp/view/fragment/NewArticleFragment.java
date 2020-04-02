@@ -102,14 +102,6 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
     }
 
     @Override
-    public List<WxArticleDataBean> getDataList() {
-        if (mDataBeanList == null) {
-            mDataBeanList = new ArrayList<>();
-        }
-        return mDataBeanList;
-    }
-
-    @Override
     public XRecyclerView getRecyclerView() {
         return mRecyclerView;
     }

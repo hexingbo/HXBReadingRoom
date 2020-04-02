@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">贺兴波</string>
+    <string name="app_name">WanAndroid</string>
 
     <string name="loading">正在加载...</string>
     <string name="loadFail">加载不出数据</string>

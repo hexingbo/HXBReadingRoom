@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/public_mar_left_10dp"
+    android:layout_marginTop="@dimen/public_mar_top_5dp"
+    android:layout_marginRight="@dimen/public_mar_right_10dp"
+    android:layout_marginBottom="@dimen/public_mar_bottom_5dp"
+    app:cardBackgroundColor="@color/colorWhiteToLightBlack"
+    app:cardCornerRadius="@dimen/public_radius_5dp"
+    app:cardElevation="2dp">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/public_pad_top_10dp"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/public_mar_bottom_5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="5"
+                android:text="标题"
+                android:textColor="@color/colorBlack"
+                android:textSize="@dimen/public_font_18sp" />
+
+            <ImageView
+                android:id="@+id/img_envelopePic"
+                android:layout_width="@dimen/public_width_80dp"
+                android:layout_height="@dimen/public_height_110dp"
+                android:layout_marginLeft="@dimen/public_mar_left_10dp"
+                android:scaleType="centerInside" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_author"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/public_mar_right_10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="作者："
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/public_font_14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_shareUser"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/public_mar_right_10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="分享人："
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/public_font_14sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_category"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/public_mar_right_10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="分类："
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/public_font_14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/public_mar_right_10dp"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="时间："
+                        android:textColor="@color/colorGray"
+                        android:textSize="@dimen/public_font_14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/img_shoucang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/public_pad_top_10dp"
+                android:src="@mipmap/ic_shoucang_n" />
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

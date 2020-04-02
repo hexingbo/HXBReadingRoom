@@ -5,6 +5,7 @@ import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.UserBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleListBean;
+import com.hxb.wan.android.mvp.model.entity.res.WxProjectListBean;
 
 import java.util.List;
 
@@ -65,7 +66,7 @@ public interface HxbWanAndroidService {
      */
     @GET("article/top/json")
     Observable<HttpResult<List<WxArticleDataBean>>> getWxArticleTopList();
-    
+
     /**
      * 获取feed文章列表
      *
@@ -75,9 +76,14 @@ public interface HxbWanAndroidService {
     @GET("article/list/{page}/json")
     Observable<HttpResult<WxArticleListBean>> getWxArticleList(@Path("page") int page);
 
-
-
-
+    /**
+     * 获取最新项目列表
+     *
+     * @param page 页数
+     * @return 最新项目列表数据
+     */
+    @GET("article/listproject/{page}/json")
+    Observable<HttpResult<WxProjectListBean>> getWxPorjectList(@Path("page") int page);
 
 
 }

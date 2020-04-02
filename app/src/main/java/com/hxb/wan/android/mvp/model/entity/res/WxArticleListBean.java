@@ -84,4 +84,16 @@ public class WxArticleListBean {
         this.datas = datas;
     }
 
+    @Override
+    public String toString() {
+        return "WxArticleListBean{" +
+                "curPage=" + curPage +
+                ", offset=" + offset +
+                ", over=" + over +
+                ", pageCount=" + pageCount +
+                ", size=" + size +
+                ", total=" + total +
+                ", datas=" + datas +
+                '}';
+    }
 }

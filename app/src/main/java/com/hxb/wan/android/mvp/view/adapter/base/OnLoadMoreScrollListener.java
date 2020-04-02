@@ -1,4 +1,4 @@
-package com.hxb.wan.android.mvp.view.adapter;
+package com.hxb.wan.android.mvp.view.adapter.base;
 
 import android.os.SystemClock;
 import android.support.v7.widget.LinearLayoutManager;

@@ -21,7 +21,7 @@ public abstract class CommonObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-
+        
     }
 
     @Override

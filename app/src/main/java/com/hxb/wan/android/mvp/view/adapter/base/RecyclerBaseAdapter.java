@@ -1,4 +1,4 @@
-package com.hxb.wan.android.mvp.view.adapter;
+package com.hxb.wan.android.mvp.view.adapter.base;
 
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;

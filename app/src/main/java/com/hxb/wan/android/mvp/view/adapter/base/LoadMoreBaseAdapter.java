@@ -1,4 +1,4 @@
-package com.hxb.wan.android.mvp.view.adapter;
+package com.hxb.wan.android.mvp.view.adapter.base;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;

@@ -36,4 +36,14 @@ public class HttpResult<T> {
     public void setData(T data) {
         this.data = data;
     }
+
+
+    @Override
+    public String toString() {
+        return "HttpResult{" +
+                "errorCode=" + errorCode +
+                ", errorMsg='" + errorMsg + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

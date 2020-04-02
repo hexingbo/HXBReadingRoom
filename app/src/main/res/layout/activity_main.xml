@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed|snap|enterAlways"
                 app:statusBarScrim="?attr/colorPrimary"
                 app:titleEnabled="false">
 
@@ -56,7 +56,7 @@
                 android:id="@+id/tl_home"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/public_height_40dp"
-                android:background="@color/colorWhite" />
+                android:background="@color/colorLightYellow" />
 
             <FrameLayout
                 android:id="@+id/fl_home"

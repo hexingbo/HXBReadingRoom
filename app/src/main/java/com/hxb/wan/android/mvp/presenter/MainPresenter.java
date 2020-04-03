@@ -45,7 +45,7 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
         DevRing.httpManager().commonRequest(mIModel.goLogOutUser(), new MyCommonObserver<HttpResult>() {
             @Override
             public void onResult(HttpResult result) {
-                mIModel.updateMenuUserInfo(null);
+                mIModel.clearUserInfo();
             }
 
             @Override

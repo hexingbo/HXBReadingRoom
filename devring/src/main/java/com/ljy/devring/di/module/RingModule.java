@@ -16,8 +16,6 @@ import com.ljy.devring.cache.support.SpCache;
 import com.ljy.devring.db.support.ITableManger;
 import com.ljy.devring.http.HttpConfig;
 import com.ljy.devring.http.support.body.ProgressListener;
-import com.ljy.devring.http.support.cookie.CookieJarImpl;
-import com.ljy.devring.http.support.cookie.MemoryCookieStore;
 import com.ljy.devring.http.support.interceptor.HttpCacheInterceptor;
 import com.ljy.devring.http.support.interceptor.HttpHeaderInterceptor;
 import com.ljy.devring.http.support.interceptor.HttpLoggingInterceptor;

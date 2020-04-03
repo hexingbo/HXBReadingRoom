@@ -62,9 +62,9 @@ public interface HxbWanAndroidService {
 
 
     /**
-     * 广告栏
+     * 获取广告栏数据
      *
-     * @return 广告栏数据
+     * @return
      */
     @GET("banner/json")
     Observable<HttpResult<List<BannerData>>> getBannerList();
@@ -72,7 +72,7 @@ public interface HxbWanAndroidService {
     /**
      * 获取置顶文章
      *
-     * @return 置顶文章数据
+     * @return
      */
     @GET("article/top/json")
     Observable<HttpResult<List<WxArticleDataBean>>> getWxArticleTopList();
@@ -81,7 +81,7 @@ public interface HxbWanAndroidService {
      * 获取feed文章列表
      *
      * @param page 页数
-     * @return feed文章列表数据
+     * @return
      */
     @GET("article/list/{page}/json")
     Observable<HttpResult<WxArticleListData>> getWxArticleList(@Path("page") int page);
@@ -90,22 +90,47 @@ public interface HxbWanAndroidService {
      * 获取最新项目列表
      *
      * @param page 页数
-     * @return 最新项目列表数据
+     * @return
      */
     @GET("article/listproject/{page}/json")
     Observable<HttpResult<WxProjectListData>> getWxPorjectList(@Path("page") int page);
-    
-    
+
+
     /**
      * 获取最新项目列表
      *
      * @param page 页数
-     * @return 最新项目列表数据
+     * @return
      */
     @GET("lg/collect/list/{page}/json")
     Observable<HttpResult<MyCollectListData>> getMyCollectedList(@Path("page") int page);
-    
-    
+
+    /**
+     * 收藏站内文章
+     *
+     * @param id 文章id，
+     * @return
+     */
+    @POST("lg/collect/{id}/json")
+    Observable<HttpResult> postCollect(@Path("id") int id);
+
+    /**
+     * 取消收藏(文章列表里面的)
+     *
+     * @param originId 文章id，
+     * @return
+     */
+    @POST("lg/uncollect_originId/{id}/json")
+    Observable<HttpResult> postUncollectOriginId(@Path("id") int originId);
+
+    /**
+     * 取消收藏(我的收藏页面)
+     *
+     * @param id 文章id，
+     * @return
+     */
+    @POST("lg/uncollect/{id}/json")
+    Observable<HttpResult> postUncollect(@Path("id") int id);
 
 
 }

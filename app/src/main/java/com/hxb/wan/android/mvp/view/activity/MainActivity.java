@@ -98,7 +98,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private int mCurrentIndex;//记录当前显示的fragment索引，用于配置变化重建后恢复页面
 
     private long mExitTime;
-    private UserBean userBean;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -204,33 +203,25 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
      * 设置用户信息
      */
     private void setUserInfo() {
-        userBean = null;
-        String userJson = DataSPUtils.getString(Constants.SP_UserBean, "");
-        String userHead = "";
-        String userName = "";
-        if (!TextUtils.isEmpty(userJson)) {
-            userBean = new Gson().fromJson(userJson, UserBean.class);
-        }
-        if (userBean != null) {
-            userHead = userBean.getIcon();
-            userName = userBean.getNickname();
-        }
-
+        String userHead = MainDataEvent.init().getUserHead();
         if (TextUtils.isEmpty(userHead)) {
             DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
         } else {
             DevRing.imageManager().loadNet(userHead, mIvAvatar, new LoadOption().setIsCircle(true));
         }
 
-        mTvUserName.setText(TextUtils.isEmpty(userName) ? "未登录" : userName);
+        boolean login = MainDataEvent.init().getLogin();
+        mTvUserName.setText(login ? (TextUtils.isEmpty(MainDataEvent.init().getUserName()) ? "用户昵称" : MainDataEvent.init().getUserName()) : "未登录");
+
         mTvUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //登录
-                AppManagerUtil.jump(userBean == null ? UserLoginActivity.class : UserLoginActivity.class);
+                AppManagerUtil.jump(login ? UserLoginActivity.class : UserLoginActivity.class);
             }
         });
-        mNavigationView.getMenu().findItem(R.id.nav_item_login_out).setVisible(userBean != null);
+        mNavigationView.getMenu().findItem(R.id.nav_item_collect).setTitle(getResources().getString(R.string.strShoucangjia, MainDataEvent.init().getUserCollectedNumber()));
+        mNavigationView.getMenu().findItem(R.id.nav_item_login_out).setVisible(login);
 
     }
 
@@ -461,12 +452,15 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
     public void handleEvent(MainDataEvent event) {
-        if (!event.isLogin()) {
-            //收起侧边栏
-            mDrawerLayout.closeDrawers();
+//        if (event.getLogin()) {
+//            //收起侧边栏
+//            mDrawerLayout.closeDrawers();
+//        }
+        if (event.getLogin()) {
+            //更新侧滑栏中菜单项的用户信息
+            setUserInfo();//更新用户信息
         }
-        //更新侧滑栏中菜单项的用户信息
-        setUserInfo();//更新用户信息
+
     }
 
 }

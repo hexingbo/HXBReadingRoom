@@ -18,6 +18,6 @@ public interface IMainModel extends IBaseModel {
     Observable<HttpResult> goLogOutUser();
 
     //更新侧滑栏菜单用户信息
-    void updateMenuUserInfo(UserBean userBean);
+    void clearUserInfo();
 
 }

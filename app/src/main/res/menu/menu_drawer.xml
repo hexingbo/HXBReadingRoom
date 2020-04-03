@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_item_collect"
             android:icon="@mipmap/ic_lab_shoucangjia"
-            android:title="我的收藏夹" />
+            android:title="@string/strShoucangjia" />
         <item
             android:id="@+id/nav_item_guangchang"
             android:icon="@mipmap/ic_lab_guangchang"

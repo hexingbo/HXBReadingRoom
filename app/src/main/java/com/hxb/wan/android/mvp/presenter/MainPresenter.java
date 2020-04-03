@@ -22,8 +22,8 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
         super(iView, iModel);
     }
 
-    
-    public void getBannerList(){
+
+    public void getBannerList() {
         DevRing.httpManager().commonRequest(mIModel.getBannerList(), new MyCommonObserver<HttpResult<List<BannerData>>>() {
             @Override
             public void onResult(HttpResult<List<BannerData>> result) {
@@ -34,6 +34,23 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
 
             @Override
             public void onError(HttpThrowable throwable) {
+            }
+        }, RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY));
+    }
+
+    /**
+     * 退出登录
+     */
+    public void goLogOutUser() {
+        DevRing.httpManager().commonRequest(mIModel.goLogOutUser(), new MyCommonObserver<HttpResult>() {
+            @Override
+            public void onResult(HttpResult result) {
+                mIModel.updateMenuUserInfo(null);
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                mIView.showMessage(throwable.message);
             }
         }, RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY));
     }

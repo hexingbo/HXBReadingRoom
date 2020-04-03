@@ -38,7 +38,7 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
 
     @Inject
     Dialog mDialog;
-    
+
     @BindView(R.id.public_toolbar_back)
     RelativeLayout publicToolbarBack;
     @BindView(R.id.et_username)
@@ -78,7 +78,7 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
 
     @OnClick(R.id.btn_register)
     public void onViewClicked_Register() {
-        jumpUserRegisterActivity();
+        AppManagerUtil.jumpAndFinish(UserRegisterActivity.class);
     }
 
     @Override
@@ -101,15 +101,4 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
         return this;
     }
 
-
-    @Override
-    public void jumpMainActivity(UserBean userBean) {
-        DataSPUtils.putString(Constants.SP_UserBean, new Gson().toJson(userBean));
-        AppManagerUtil.jumpAndFinish(MainActivity.class);
-    }
-
-    @Override
-    public void jumpUserRegisterActivity() {
-        AppManagerUtil.jumpAndFinish(UserRegisterActivity.class);
-    }
 }

@@ -9,16 +9,21 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.hxb.wan.android.R;
+import com.hxb.wan.android.app.constant.Constants;
 import com.hxb.wan.android.di.component.activity.DaggerMainActivityComponent;
 import com.hxb.wan.android.di.module.activity.MainActivityModule;
+import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.BannerData;
+import com.hxb.wan.android.mvp.model.entity.res.UserBean;
 import com.hxb.wan.android.mvp.presenter.MainPresenter;
 import com.hxb.wan.android.mvp.view.activity.base.BaseActivity;
 import com.hxb.wan.android.mvp.view.fragment.NewArticleFragment;
@@ -26,8 +31,11 @@ import com.hxb.wan.android.mvp.view.fragment.NewProjectFragment;
 import com.hxb.wan.android.mvp.view.fragment.base.BaseFragment;
 import com.hxb.wan.android.mvp.view.iview.IMainView;
 import com.hxb.wan.android.utils.GlideImageLoader;
+import com.hxb.wan.android.utils.statusbar.StatusBarUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.LoadOption;
+import com.ljy.devring.util.AppManagerUtil;
+import com.ljy.devring.util.DataSPUtils;
 import com.ljy.devring.util.RingToast;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -90,6 +98,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private int mCurrentIndex;//记录当前显示的fragment索引，用于配置变化重建后恢复页面
 
     private long mExitTime;
+    private UserBean userBean;
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -123,6 +132,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mToolbar.setTitle("");
         this.setSupportActionBar(mToolbar);
         mToolbar.setTitle(mStrTitle);
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
         //初始化TabLayout
         mTlHome.setTabMode(TabLayout.MODE_FIXED);//支持水平滑动，当屏幕空间不足
@@ -149,7 +159,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 break;
         }
 
-        setUserHead("", getString(R.string.app_name));
+        setUserInfo();
         mPresenter.getBannerList();
     }
 
@@ -189,14 +199,39 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mBanner.start();
     }
 
+
     /**
-     * 设置用户头像
-     *
-     * @param userHead
+     * 设置用户信息
      */
-    private void setUserHead(String userHead, String userName) {
-        DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
-        mTvUserName.setText("hexingbo");
+    private void setUserInfo() {
+        userBean = null;
+        String userJson = DataSPUtils.getString(Constants.SP_UserBean, "");
+        String userHead = "";
+        String userName = "";
+        if (!TextUtils.isEmpty(userJson)) {
+            userBean = new Gson().fromJson(userJson, UserBean.class);
+        }
+        if (userBean != null) {
+            userHead = userBean.getIcon();
+            userName = userBean.getNickname();
+        }
+
+        if (TextUtils.isEmpty(userHead)) {
+            DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
+        } else {
+            DevRing.imageManager().loadNet(userHead, mIvAvatar, new LoadOption().setIsCircle(true));
+        }
+
+        mTvUserName.setText(TextUtils.isEmpty(userName) ? "未登录" : userName);
+        mTvUserName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //登录
+                AppManagerUtil.jump(userBean == null ? UserLoginActivity.class : UserLoginActivity.class);
+            }
+        });
+        mNavigationView.getMenu().findItem(R.id.nav_item_login_out).setVisible(userBean != null);
+
     }
 
     @Override
@@ -274,9 +309,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                         break;
                     case R.id.nav_item_about_us:
                         //关于我们
+                        AppManagerUtil.jump(AboutUsActivity.class);
                         break;
                     case R.id.nav_item_login_out:
                         //退出登录
+                        mPresenter.goLogOutUser();
                         break;
                 }
                 //收起侧边栏
@@ -412,6 +449,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         if (mBanner != null) {
             mBanner.stopAutoPlay();
         }
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    //接收事件总线发来的事件
+    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+    @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
+    public void handleEvent(MainDataEvent event) {
+        if (!event.isLogin()) {
+            //收起侧边栏
+            mDrawerLayout.closeDrawers();
+        }
+        //更新侧滑栏中菜单项的用户信息
+        setUserInfo();//更新用户信息
     }
 
 }

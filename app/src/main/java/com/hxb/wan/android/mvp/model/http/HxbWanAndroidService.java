@@ -52,6 +52,15 @@ public interface HxbWanAndroidService {
     Observable<HttpResult<UserBean>> goUserRegister(@Field("username") String username, @Field("password") String password, @Field("repassword") String repassword);
 
     /**
+     * 退出登录
+     *
+     * @return
+     */
+    @GET("user/logout/json")
+    Observable<HttpResult> goLogOutUser();
+
+
+    /**
      * 广告栏
      *
      * @return 广告栏数据

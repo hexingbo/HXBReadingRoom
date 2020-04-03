@@ -73,7 +73,7 @@ public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> im
         switch (view.getId()) {
             case R.id.public_toolbar_back:
             case R.id.btn_login:
-                jumpUserLoginActivity();
+                AppManagerUtil.jumpAndFinish(UserLoginActivity.class);
                 break;
             case R.id.btn_register:
                 mPresenter.goUserRegister(etUsername.getText().toString().trim(),
@@ -102,17 +102,6 @@ public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> im
     @Override
     public void showMessage(@NonNull String message) {
         RingToast.show(message);
-    }
-
-    @Override
-    public void jumpMainActivity(UserBean userBean) {
-        DataSPUtils.putString(Constants.SP_UserBean, new Gson().toJson(userBean));
-        AppManagerUtil.jumpAndFinish(MainActivity.class);
-    }
-
-    @Override
-    public void jumpUserLoginActivity() {
-        AppManagerUtil.jumpAndFinish(UserLoginActivity.class);
     }
 
 }

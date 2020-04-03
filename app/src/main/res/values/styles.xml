@@ -1,8 +1,8 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="MyAppTheme">
-    </style>
+    <style name="AppTheme" parent="MyAppTheme"></style>
+
     <style name="MyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--导航栏的颜色-->
@@ -13,6 +13,11 @@
         <!--字体的主题颜色-->
         <item name="android:textColorPrimary">@color/colorBlack</item>
     </style>
+
+    <style name="toolbar_theme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@color/colorWhite</item>
+    </style>
+
 
     <style name="public_dialog_progress" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>
@@ -32,7 +37,7 @@
         <!-- toolbar中menu的文字的颜色,并非溢出菜单的内容文字颜色 -->
         <item name="actionMenuTextColor">@color/colorWhite</item>
         <item name="android:windowAnimationStyle">@style/pageInOut</item>
-        
+
     </style>
 
     <!-- 页面跳转间的过渡动画 -->
@@ -57,5 +62,5 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
-    
+
 </resources>

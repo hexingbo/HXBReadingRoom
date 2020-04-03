@@ -69,7 +69,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setTranspStatusBar(null);
         if (getContentLayout() != 0) {
             setContentView(getContentLayout());
             Unbinder bind = ButterKnife.bind(this);
@@ -102,6 +101,7 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
                     .build(this)
                     .apply();
         }
+        setTranspStatusBar(null);
     }
 
     @Override

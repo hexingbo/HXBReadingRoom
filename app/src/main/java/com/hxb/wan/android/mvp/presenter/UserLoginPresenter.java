@@ -2,6 +2,7 @@ package com.hxb.wan.android.mvp.presenter;
 
 import android.text.TextUtils;
 
+import com.google.gson.Gson;
 import com.hxb.wan.android.app.constant.Constants;
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
@@ -65,7 +66,7 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginView, IUserLogin
                 .subscribe(new MyCommonObserver<HttpResult<UserBean>>() {
                     @Override
                     public void onResult(HttpResult<UserBean> result) {
-                        mIView.jumpMainActivity(result.getData());
+                        mIModel.updateMenuUserInfo(result.getData());
                     }
 
                     @Override

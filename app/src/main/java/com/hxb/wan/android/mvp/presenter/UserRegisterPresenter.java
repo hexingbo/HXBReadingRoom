@@ -58,7 +58,7 @@ public class UserRegisterPresenter extends BasePresenter<IUserRegisterView, IUse
                 .subscribe(new MyCommonObserver<HttpResult<UserBean>>() {
                     @Override
                     public void onResult(HttpResult<UserBean> result) {
-                        mIView.jumpMainActivity(result.getData());
+                        mIModel.updateMenuUserInfo(result.getData());
                     }
 
                     @Override

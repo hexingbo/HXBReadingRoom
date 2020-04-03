@@ -9,5 +9,5 @@ import java.util.List;
 public interface IMainView extends IBaseView {
 
     void getBannerListSuccess(List<BannerData> data);
-
+    
 }

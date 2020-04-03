@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".mvp.view.activity.MyCollectedManageActivity" />
         <activity android:name=".mvp.view.activity.AboutUsActivity" />
         <activity android:name=".mvp.view.activity.UserRegisterActivity" />
         <activity android:name=".mvp.view.activity.UserLoginActivity" />

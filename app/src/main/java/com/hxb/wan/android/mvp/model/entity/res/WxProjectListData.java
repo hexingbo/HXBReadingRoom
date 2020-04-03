@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * @Author :hexingbo
  * @Date :2020/4/2
- * @FileName： WxProjectListBean
+ * @FileName： WxProjectListData
  * @Describe :
  */
-public class WxProjectListBean {
+public class WxProjectListData {
 
 
     /**
@@ -87,7 +87,7 @@ public class WxProjectListBean {
 
     @Override
     public String toString() {
-        return "WxProjectListBean{" +
+        return "WxProjectListData{" +
                 "curPage=" + curPage +
                 ", offset=" + offset +
                 ", over=" + over +

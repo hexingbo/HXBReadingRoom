@@ -2,14 +2,16 @@ package com.hxb.wan.android.mvp.presenter;
 
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
+import com.hxb.wan.android.mvp.model.entity.res.MyCollectListData;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectListData;
 import com.hxb.wan.android.mvp.presenter.base.BasePresenter;
-import com.hxb.wan.android.mvp.view.iview.INewProjectView;
-import com.hxb.wan.android.mvp.model.imodel.INewProjectModel;
+import com.hxb.wan.android.mvp.view.iview.IMyCollectedManageView;
+import com.hxb.wan.android.mvp.model.imodel.IMyCollectedManageModel;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.RxLifecycleUtil;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
@@ -18,16 +20,16 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
-public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProjectModel> {
+public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManageView, IMyCollectedManageModel> {
 
-    public NewProjectPresenter(INewProjectView iView, INewProjectModel iModel) {
+    public MyCollectedManagePresenter(IMyCollectedManageView iView, IMyCollectedManageModel iModel) {
         super(iView, iModel);
     }
 
     int page;
 
-    public void getNewProjectList(boolean isRefresh) {
-        DevRing.httpManager().commonRequest(mIModel.getNewProjectList(isRefresh ? page = 0 : page)
+    public void getMyCollectedList(boolean isRefresh) {
+        DevRing.httpManager().commonRequest(mIModel.getMyCollectedList(isRefresh ? page = 0 : page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe(new Consumer<Disposable>() {
                     @Override
@@ -44,9 +46,9 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
                             mIView.getRecyclerView().loadMoreComplete();
                         }
                     }
-                }), new MyCommonObserver<HttpResult<WxProjectListData>>() {
+                }), new MyCommonObserver<HttpResult<MyCollectListData>>() {
             @Override
-            public void onResult(HttpResult<WxProjectListData> result) {
+            public void onResult(HttpResult<MyCollectListData> result) {
                 if (result.getData() != null) {
                     if (isRefresh) {
                         mIView.getAdapter().setListAll(result.getData().getDatas());
@@ -61,12 +63,13 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
             public void onError(HttpThrowable throwable) {
                 if (isRefresh) {
                     mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_ERROR);
+                    mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_NORMAL);
                 } else {
                     mIView.showMessage(throwable.message);
                 }
 
             }
-        }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
+        }, RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY));
     }
 
 }

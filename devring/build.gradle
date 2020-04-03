@@ -67,6 +67,7 @@ dependencies {
         exclude module: 'rxandroid'
         exclude module: 'rxlifecycle'
     }
+    api rootProject.ext.dependencies["CookieJar"]
     api rootProject.ext.dependencies["okhttp3"]
     //network
     api(rootProject.ext.dependencies["retrofit"]) {

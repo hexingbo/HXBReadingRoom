@@ -58,6 +58,7 @@ ext {
             "retrofit-converter-gson" : "com.squareup.retrofit2:converter-gson:${version["retrofitSdkVersion"]}",
             "retrofit-adapter-rxjava2": "com.squareup.retrofit2:adapter-rxjava2:${version["retrofitSdkVersion"]}",
             "okhttp3"                 : "com.squareup.okhttp3:okhttp:3.11.0",
+            "CookieJar"                 : "com.github.franmontiel:PersistentCookieJar:v1.0.1",
 
             //dagger2依赖注入
             "dagger"                  : "com.google.dagger:dagger:${version["daggerSdkVersion"]}",

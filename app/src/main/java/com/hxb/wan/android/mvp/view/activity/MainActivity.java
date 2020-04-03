@@ -285,6 +285,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 switch (menuItem.getItemId()) {
                     case R.id.nav_item_collect:
                         //收藏夹
+                        AppManagerUtil.jump(MyCollectedManageActivity.class);
                         break;
                     case R.id.nav_item_guangchang:
                         //干货广场

@@ -5,10 +5,10 @@ import java.util.List;
 /**
  * @Author :hexingbo
  * @Date :2020/4/1
- * @FileName： WxArticleListBean
+ * @FileName： WxArticleListData
  * @Describe :
  */
-public class WxArticleListBean {
+public class WxArticleListData {
 
     /**
      * curPage : 1
@@ -86,7 +86,7 @@ public class WxArticleListBean {
 
     @Override
     public String toString() {
-        return "WxArticleListBean{" +
+        return "WxArticleListData{" +
                 "curPage=" + curPage +
                 ", offset=" + offset +
                 ", over=" + over +

@@ -3,7 +3,7 @@ package com.hxb.wan.android.mvp.presenter;
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
-import com.hxb.wan.android.mvp.model.entity.res.WxArticleListBean;
+import com.hxb.wan.android.mvp.model.entity.res.WxArticleListData;
 import com.hxb.wan.android.mvp.model.imodel.INewArticleModel;
 import com.hxb.wan.android.mvp.presenter.base.BasePresenter;
 import com.hxb.wan.android.mvp.view.iview.INewArticleView;
@@ -79,9 +79,9 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
                         RingLog.d("请求结束");
                         mIView.getRecyclerView().loadMoreComplete();
                     }
-                }), new MyCommonObserver<HttpResult<WxArticleListBean>>() {
+                }), new MyCommonObserver<HttpResult<WxArticleListData>>() {
             @Override
-            public void onResult(HttpResult<WxArticleListBean> result) {
+            public void onResult(HttpResult<WxArticleListData> result) {
                 RingLog.d("返回数据-->" + result.toString());
                 if (result.getData() != null) {
                     page += 1;

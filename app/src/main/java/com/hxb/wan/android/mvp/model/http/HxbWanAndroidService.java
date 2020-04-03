@@ -2,10 +2,11 @@ package com.hxb.wan.android.mvp.model.http;
 
 import com.hxb.wan.android.mvp.model.entity.res.BannerData;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
+import com.hxb.wan.android.mvp.model.entity.res.MyCollectListData;
 import com.hxb.wan.android.mvp.model.entity.res.UserBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
-import com.hxb.wan.android.mvp.model.entity.res.WxArticleListBean;
-import com.hxb.wan.android.mvp.model.entity.res.WxProjectListBean;
+import com.hxb.wan.android.mvp.model.entity.res.WxArticleListData;
+import com.hxb.wan.android.mvp.model.entity.res.WxProjectListData;
 
 import java.util.List;
 
@@ -83,7 +84,7 @@ public interface HxbWanAndroidService {
      * @return feed文章列表数据
      */
     @GET("article/list/{page}/json")
-    Observable<HttpResult<WxArticleListBean>> getWxArticleList(@Path("page") int page);
+    Observable<HttpResult<WxArticleListData>> getWxArticleList(@Path("page") int page);
 
     /**
      * 获取最新项目列表
@@ -92,7 +93,19 @@ public interface HxbWanAndroidService {
      * @return 最新项目列表数据
      */
     @GET("article/listproject/{page}/json")
-    Observable<HttpResult<WxProjectListBean>> getWxPorjectList(@Path("page") int page);
+    Observable<HttpResult<WxProjectListData>> getWxPorjectList(@Path("page") int page);
+    
+    
+    /**
+     * 获取最新项目列表
+     *
+     * @param page 页数
+     * @return 最新项目列表数据
+     */
+    @GET("lg/collect/list/{page}/json")
+    Observable<HttpResult<MyCollectListData>> getMyCollectedList(@Path("page") int page);
+    
+    
 
 
 }

@@ -8,5 +8,4 @@
     android:background="@color/colorWhiteSmoke"
     android:overScrollMode="never"
     tools:itemCount="5"
-    tools:layoutManager="LinearLayoutManager"
-    tools:listitem="@layout/item_new_article" />
+    tools:layoutManager="LinearLayoutManager" />

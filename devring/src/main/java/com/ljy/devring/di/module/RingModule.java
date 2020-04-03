@@ -4,6 +4,10 @@ import android.app.Application;
 import android.support.v4.util.SimpleArrayMap;
 import android.text.TextUtils;
 
+import com.franmontiel.persistentcookiejar.ClearableCookieJar;
+import com.franmontiel.persistentcookiejar.PersistentCookieJar;
+import com.franmontiel.persistentcookiejar.cache.SetCookieCache;
+import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersistor;
 import com.ljy.devring.bus.EventBusManager;
 import com.ljy.devring.bus.support.IBusManager;
 import com.ljy.devring.cache.support.DiskCache;
@@ -12,6 +16,8 @@ import com.ljy.devring.cache.support.SpCache;
 import com.ljy.devring.db.support.ITableManger;
 import com.ljy.devring.http.HttpConfig;
 import com.ljy.devring.http.support.body.ProgressListener;
+import com.ljy.devring.http.support.cookie.CookieJarImpl;
+import com.ljy.devring.http.support.cookie.MemoryCookieStore;
 import com.ljy.devring.http.support.interceptor.HttpCacheInterceptor;
 import com.ljy.devring.http.support.interceptor.HttpHeaderInterceptor;
 import com.ljy.devring.http.support.interceptor.HttpLoggingInterceptor;
@@ -98,7 +104,7 @@ public class RingModule {
         return new Retrofit.Builder();
     }
 
-//    @Singleton
+    //    @Singleton
     @Provides
     OkHttpClient okHttpClient(Application application, OkHttpClient.Builder builder, HttpConfig httpConfig, HttpProgressInterceptor progressInterceptor) {
         if (httpConfig.getConnectTimeout() > 0) {
@@ -127,6 +133,7 @@ public class RingModule {
             builder.addInterceptor(headerInterceptor);
         }
         builder.addNetworkInterceptor(progressInterceptor);
+        builder.cookieJar(new PersistentCookieJar(new SetCookieCache(), new SharedPrefsCookiePersistor(application)));
         return builder.build();
     }
 

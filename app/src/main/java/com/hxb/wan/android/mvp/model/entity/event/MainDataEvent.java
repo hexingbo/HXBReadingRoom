@@ -58,23 +58,26 @@ public class MainDataEvent {
         return DataSPUtils.getString(Constants.SP_UserHead, "");
     }
 
-    public void setUserHead(String userHead) {
+    public MainDataEvent setUserHead(String userHead) {
         DataSPUtils.putString(Constants.SP_UserHead, userHead);
+        return dataEvent;
     }
 
     public String getUserName() {
         return DataSPUtils.getString(Constants.SP_UserName, "");
     }
 
-    public void setUserName(String userName) {
+    public MainDataEvent setUserName(String userName) {
         DataSPUtils.putString(Constants.SP_UserName, userName);
+        return dataEvent;
     }
 
     public int getUserCollectedNumber() {
         return DataSPUtils.getInt(Constants.SP_UserCollectedNumber, 0);
     }
 
-    public void setUserCollectedNumber(int userCollectedNumber) {
+    public MainDataEvent setUserCollectedNumber(int userCollectedNumber) {
         DataSPUtils.putInt(Constants.SP_UserCollectedNumber, userCollectedNumber);
+        return dataEvent;
     }
 }

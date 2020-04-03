@@ -1,0 +1,28 @@
+ mIModel.goUserLogin(username, password)
+                .subscribeOn(Schedulers.io()) //指定 subscribe() 发生在 IO 线程
+                .subscribeOn(AndroidSchedulers.mainThread())// 指示Single在指定的调度程序上执行操作
+                .observeOn(AndroidSchedulers.mainThread()) // 指定 Subscriber 的回调发生在主线程
+                .compose(RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY))//绑定Activity生命周期
+                .doOnSubscribe(new Consumer() {
+                    @Override
+                    public void accept(Object disposable) throws Exception {
+                        mIView.showLoading();//显示下拉刷新的进度条
+                    }
+                })
+                .doFinally(new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        mIView.hideLoading();//隐藏下拉刷新的进度条
+                    }
+                })
+                .subscribe(new MyCommonObserver<HttpResult<UserBean>>() {
+                    @Override
+                    public void onResult(HttpResult<UserBean> result) {
+                        mIModel.updateMenuUserInfo(result.getData());
+                    }
+
+                    @Override
+                    public void onError(HttpThrowable httpThrowable) {
+                        RingToast.show(httpThrowable.message);
+                    }
+                });

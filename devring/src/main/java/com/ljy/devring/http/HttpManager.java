@@ -7,6 +7,7 @@ import com.ljy.devring.http.support.RetryFunction;
 import com.ljy.devring.http.support.body.ProgressListener;
 import com.ljy.devring.http.support.interceptor.HttpProgressInterceptor;
 import com.ljy.devring.http.support.observer.DownloadObserver;
+import com.ljy.devring.http.support.observer.HttpNetObserver;
 import com.ljy.devring.http.support.observer.UploadObserver;
 import com.ljy.devring.util.FileUtil;
 import com.trello.rxlifecycle2.LifecycleTransformer;
@@ -28,6 +29,7 @@ import javax.inject.Singleton;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
@@ -91,8 +93,8 @@ public class HttpManager {
      * @param observer    请求回调
      * @param transformer 生命周期控制，如果为null，则不进行生命周期控制
      */
-    public void commonRequest(Observable observable, Observer observer, LifecycleTransformer transformer) {
-        handleRetry(handleThread(handleLife(observable, transformer)), mHttpConfig.isUseRetryWhenError(), mHttpConfig.getTimeRetryDelay(), mHttpConfig.getMaxRetryCount()).subscribe
+    public void commonRequest(Observable observable, HttpNetObserver httpNetObserver, Observer observer, LifecycleTransformer transformer) {
+        handleRetry(handleThread(handleLife(observable, transformer),httpNetObserver), mHttpConfig.isUseRetryWhenError(), mHttpConfig.getTimeRetryDelay(), mHttpConfig.getMaxRetryCount()).subscribe
                 (observer);
     }
 
@@ -105,8 +107,8 @@ public class HttpManager {
      * @param timeRetryDelay 失败后重试的延迟时长
      * @param maxRetryCount  失败后重试的最大次数
      */
-    public void commonRequest(Observable observable, Observer observer, LifecycleTransformer transformer, int timeRetryDelay, int maxRetryCount) {
-        handleRetry(handleThread(handleLife(observable, transformer)), true, timeRetryDelay, maxRetryCount).subscribe(observer);
+    public void commonRequest(Observable observable,HttpNetObserver httpNetObserver, Observer observer, LifecycleTransformer transformer, int timeRetryDelay, int maxRetryCount) {
+        handleRetry(handleThread(handleLife(observable, transformer),httpNetObserver), true, timeRetryDelay, maxRetryCount).subscribe(observer);
     }
 
     /**
@@ -119,7 +121,7 @@ public class HttpManager {
      *                       如果是使用同一个URL但根据请求参数的不同而上传不同资源的情况，则使用两个参数的构造函数，第一个参数传入上传的URL地址，第二参数传入自定义的字符串加以区分。
      * @param transformer    生命周期控制，如果为null，则不进行生命周期控制
      */
-    public void uploadRequest(Observable observable, UploadObserver uploadObserver, LifecycleTransformer transformer) {
+    public void uploadRequest(Observable observable,HttpNetObserver httpNetObserver, UploadObserver uploadObserver, LifecycleTransformer transformer) {
         if (!TextUtils.isEmpty(uploadObserver.getUploadUrl())) {
             if (TextUtils.isEmpty(uploadObserver.getQualifier())) {
                 addRequestListener(uploadObserver.getUploadUrl(), uploadObserver);
@@ -127,7 +129,7 @@ public class HttpManager {
                 addDiffRequestListenerOnSameUrl(uploadObserver.getUploadUrl(), uploadObserver.getQualifier(), uploadObserver);
             }
         }
-        handleThread(handleLife(observable, transformer)).subscribe(uploadObserver);
+        handleThread(handleLife(observable, transformer),httpNetObserver).subscribe(uploadObserver);
     }
 
     /**
@@ -161,8 +163,19 @@ public class HttpManager {
     }
 
     //处理线程调度
-    private Observable handleThread(Observable observable) {
-        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+    private Observable handleThread(Observable observable, HttpNetObserver httpNetObserver) {
+        return observable.subscribeOn(Schedulers.io())
+                .doOnSubscribe(httpNetObserver)
+//                .doOnSubscribe(disposable -> {
+//                    //请求开始
+//                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doFinally(httpNetObserver);
+//                .doFinally(() -> {
+//                    //请求结束
+//                });
+//        return observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
     }
 
     //处理线程调度，下载文件的话则在这将内容保存至本地file中

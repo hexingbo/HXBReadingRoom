@@ -1,21 +1,21 @@
 package com.hxb.wan.android.di.module.activity;
 
+import android.app.Dialog;
 import android.os.Bundle;
 
-import com.hxb.wan.android.mvp.view.activity.MainActivity;
+import com.hxb.wan.android.mvp.model.MainModel;
+import com.hxb.wan.android.mvp.model.imodel.IMainModel;
+import com.hxb.wan.android.mvp.presenter.MainPresenter;
 import com.hxb.wan.android.mvp.view.fragment.NewArticleFragment;
 import com.hxb.wan.android.mvp.view.fragment.NewProjectFragment;
+import com.hxb.wan.android.mvp.view.iview.IMainView;
+import com.hxb.wan.android.mvp.view.weight.ProgresDialog;
 import com.ljy.devring.di.scope.ActivityScope;
+
+import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-
-import com.hxb.wan.android.mvp.presenter.MainPresenter;
-import com.hxb.wan.android.mvp.view.iview.IMainView;
-import com.hxb.wan.android.mvp.model.imodel.IMainModel;
-import com.hxb.wan.android.mvp.model.MainModel;
-
-import javax.inject.Named;
 
 
 @Module
@@ -26,6 +26,12 @@ public class MainActivityModule {
         mIView = iView;
     }
 
+    @ActivityScope
+    @Provides
+    static Dialog provideDialog(IMainView view) {
+        return new ProgresDialog(view.getActivity());
+    }
+    
     @ActivityScope
     @Provides
     IMainView iMainView() {

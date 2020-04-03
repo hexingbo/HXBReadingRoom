@@ -2,6 +2,7 @@ package com.ljy.devring.http.support.observer;
 
 import com.ljy.devring.http.support.throwable.HttpThrowable;
 import com.ljy.devring.http.support.throwable.ThrowableHandler;
+import com.ljy.devring.other.RingLog;
 
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
@@ -17,15 +18,17 @@ public abstract class CommonObserver<T> implements Observer<T> {
 
     @Override
     public void onSubscribe(Disposable d) {
+        RingLog.d("请求开始");
     }
 
     @Override
     public void onComplete() {
-        
+        RingLog.d("请求结束");
     }
 
     @Override
     public void onError(Throwable throwable) {
+        onComplete();
         if (throwable instanceof Exception) {
             onError(ThrowableHandler.handleThrowable(throwable));
         } else {

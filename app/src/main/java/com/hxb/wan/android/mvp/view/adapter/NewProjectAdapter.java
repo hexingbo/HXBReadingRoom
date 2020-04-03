@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class NewProjectAdapter extends HelperStateRecyclerViewAdapter<WxProjectDataBean> {
 
+    private OnItemClickListener<WxProjectDataBean> listener;
+
     public NewProjectAdapter(List<WxProjectDataBean> data, Context context) {
         super(data, context, R.layout.item_new_project);
     }
@@ -53,6 +55,27 @@ public class NewProjectAdapter extends HelperStateRecyclerViewAdapter<WxProjectD
         viewHolder.setVisible(R.id.tv_time, !TextUtils.isEmpty(item.getNiceDate()));
         viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
 //        viewHolder.setImageUrl(R.id.img_envelopePic,item.getEnvelopePic());
-        DevRing.imageManager().loadNet(item.getEnvelopePic(),viewHolder.getView(R.id.img_envelopePic));
+        DevRing.imageManager().loadNet(item.getEnvelopePic(), viewHolder.getView(R.id.img_envelopePic));
+        viewHolder.setOnClickListener(R.id.img_shoucang, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
     }
 }

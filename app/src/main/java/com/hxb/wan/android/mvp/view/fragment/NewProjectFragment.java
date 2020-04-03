@@ -3,6 +3,7 @@ package com.hxb.wan.android.mvp.view.fragment;
 
 import android.app.Dialog;
 import android.support.annotation.NonNull;
+import android.view.View;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewProjectFragmentComponent;
@@ -15,6 +16,7 @@ import com.hxb.wan.android.mvp.view.iview.INewProjectView;
 import com.hxb.wan.android.utils.LayoutManagerUtil;
 import com.ljy.devring.util.RingToast;
 import com.zhouyou.recyclerview.XRecyclerView;
+import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
 import java.util.List;
@@ -80,7 +82,17 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
 
     @Override
     protected void initEvent() {
-
+        mAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<WxProjectDataBean>() {
+            @Override
+            public void onItemClick(View view, WxProjectDataBean item, int position) {
+                if (view.getId() == R.id.img_shoucang) {
+                    //收藏
+                    mPresenter.postCollect(item.getId());
+                }else {
+                    RingToast.show("点击了item");
+                }
+            }
+        });
     }
 
     @Override

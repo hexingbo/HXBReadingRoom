@@ -13,6 +13,7 @@ import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.activity.DaggerMainActivityComponent;
@@ -76,6 +77,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     private List<String> mBannerUrlList;
 
     private ImageView mIvAvatar;
+    private TextView mTvUserName;
 
     @Inject
     @Named("NewArticle")
@@ -129,8 +131,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         mTlHome.addTab(mTlHome.newTab().setText(mStrNewArticle), mCurrentIndex == 0 ? true : false);
         mTlHome.addTab(mTlHome.newTab().setText(mStrNewProject), mCurrentIndex == 1 ? true : false);
 
+        //解决Android使用Menu时不显示彩色图标的问题
+        mNavigationView.setItemIconTintList(null);
         //侧滑抽屉里的圆形头像，比较特殊，无法通过butterknife初始化
         mIvAvatar = mNavigationView.getHeaderView(0).findViewById(R.id.iv_avatar);
+        mTvUserName = mNavigationView.getHeaderView(0).findViewById(R.id.tv_userNmae);
     }
 
     @Override
@@ -144,7 +149,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 break;
         }
 
-        setUserHead("");
+        setUserHead("", getString(R.string.app_name));
         mPresenter.getBannerList();
     }
 
@@ -189,8 +194,9 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
      *
      * @param userHead
      */
-    private void setUserHead(String userHead) {
+    private void setUserHead(String userHead, String userName) {
         DevRing.imageManager().loadRes(R.mipmap.ic_launcher, mIvAvatar, new LoadOption().setIsCircle(true));
+        mTvUserName.setText("hexingbo");
     }
 
     @Override
@@ -244,6 +250,27 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                 switch (menuItem.getItemId()) {
                     case R.id.nav_item_collect:
                         //收藏夹
+                        break;
+                    case R.id.nav_item_guangchang:
+                        //干货广场
+                        break;
+                    case R.id.nav_item_daohang:
+                        //导航菜单
+                        break;
+                    case R.id.nav_item_xiangmu:
+                        //项目大厅
+                        break;
+                    case R.id.nav_item_tixi:
+                        //知识体系
+                        break;
+                    case R.id.nav_item_gongjulan:
+                        //常用工具
+                        break;
+                    case R.id.nav_item_gongzhonghao:
+                        //公众号
+                        break;
+                    case R.id.nav_item_wenda:
+                        //问答交流
                         break;
                     case R.id.nav_item_about_us:
                         //关于我们

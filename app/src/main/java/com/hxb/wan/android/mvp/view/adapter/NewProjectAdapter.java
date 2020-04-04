@@ -53,7 +53,9 @@ public class NewProjectAdapter extends HelperStateRecyclerViewAdapter<WxProjectD
         viewHolder.setVisible(R.id.tv_category, !TextUtils.isEmpty(item.getChapterName()));
         viewHolder.setText(R.id.tv_time, TextUtils.isEmpty(item.getNiceDate()) ? "" : "时间：" + item.getNiceDate());
         viewHolder.setVisible(R.id.tv_time, !TextUtils.isEmpty(item.getNiceDate()));
-        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+        viewHolder.getView(R.id.img_shoucang).setSelected(item.isCollect());
+//        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+        viewHolder.getView(R.id.img_shoucang).setSelected(item.isCollect());
 //        viewHolder.setImageUrl(R.id.img_envelopePic,item.getEnvelopePic());
         DevRing.imageManager().loadNet(item.getEnvelopePic(), viewHolder.getView(R.id.img_envelopePic));
         viewHolder.setOnClickListener(R.id.img_shoucang, new View.OnClickListener() {

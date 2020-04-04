@@ -1,7 +1,10 @@
 package com.hxb.wan.android.di.module.fragment;
 
 import android.app.Dialog;
+import android.view.View;
+import android.widget.ImageView;
 
+import com.hxb.wan.android.R;
 import com.hxb.wan.android.mvp.model.NewArticleModel;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
 import com.hxb.wan.android.mvp.model.imodel.INewArticleModel;
@@ -10,6 +13,7 @@ import com.hxb.wan.android.mvp.view.adapter.NewArticleAdapter;
 import com.hxb.wan.android.mvp.view.iview.INewArticleView;
 import com.hxb.wan.android.mvp.view.weight.ProgresDialog;
 import com.ljy.devring.di.scope.FragmentScope;
+import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +62,18 @@ public class NewArticleFragmentModule {
 
     @FragmentScope
     @Provides
-    NewArticleAdapter provideNewArticleAdapter(List<WxArticleDataBean> list,INewArticleView iView) {
-        return new NewArticleAdapter(list, iView.getActivity());
+    NewArticleAdapter provideNewArticleAdapter(List<WxArticleDataBean> list, INewArticleView iView) {
+        NewArticleAdapter adapter = new NewArticleAdapter(list, iView.getActivity());
+        adapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<WxArticleDataBean>() {
+            @Override
+            public void onItemClick(View view, WxArticleDataBean item, int position) {
+                if (view.getId() == R.id.img_shoucang) {
+                    mIView.onItemShouCangClick((ImageView) view, item, position);
+                } else {
+                    mIView.onItemClick(item, position);
+                }
+            }
+        });
+        return adapter;
     }
 }

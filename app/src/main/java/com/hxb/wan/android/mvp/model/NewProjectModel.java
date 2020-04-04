@@ -18,8 +18,12 @@ public class NewProjectModel implements INewProjectModel {
     }
 
     @Override
-    public Observable<HttpResult> postCollect(int id) {
-        return DevRing.httpManager().getService(HxbWanAndroidService.class).postCollect(id);
+    public Observable<HttpResult> postCollectOrUnCollect(boolean add,int id) {
+        if (add){
+            return DevRing.httpManager().getService(HxbWanAndroidService.class).postCollect(id);
+        }else {
+            return DevRing.httpManager().getService(HxbWanAndroidService.class).postUncollectOriginId(id);
+        }
     }
 
     @Override

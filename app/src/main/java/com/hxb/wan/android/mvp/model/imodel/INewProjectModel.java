@@ -13,9 +13,9 @@ public interface INewProjectModel extends IBaseModel {
     Observable<HttpResult<WxProjectListData>> getNewProjectList(int page);
 
     //添加到我的收藏夹
-    Observable<HttpResult> postCollect(int id);
-    
+    Observable<HttpResult> postCollectOrUnCollect(boolean add, int id);
+
     //更新侧滑栏菜单收藏夹数量
     void updateMenuUserCollectNumber(int number);
-    
+
 }

@@ -1,8 +1,12 @@
 package com.hxb.wan.android.mvp.presenter;
 
+import android.widget.ImageView;
+
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
+import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
+import com.hxb.wan.android.mvp.model.entity.res.WxProjectDataBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectListData;
 import com.hxb.wan.android.mvp.presenter.base.BasePresenter;
 import com.hxb.wan.android.mvp.view.iview.INewProjectView;
@@ -74,36 +78,37 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
     }
 
     /**
-     * 添加到我的收藏夹
+     * 添加到我的收藏夹或者移除我的收藏夹
+     *
+     * @param view 收藏icon
+     * @param item 当前操作的实体对象
      */
-    public void postCollect(int id) {
-        DevRing.httpManager().commonRequest(mIModel.postCollect(id), new HttpNetObserver() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        RingLog.d("请求开始");
-                        mIView.showLoading();
-                    }
+    public void postCollectOrUnCollect(ImageView view, WxProjectDataBean item) {
+        boolean add = !item.isCollect();
+        DevRing.httpManager().commonRequest(mIModel.postCollectOrUnCollect(add, item.getId()), new HttpNetObserver() {
+            @Override
+            public void accept(Disposable disposable) throws Exception {
+                mIView.showLoading();
+            }
 
-                    @Override
-                    public void run() throws Exception {
-                        RingLog.d("请求结束");
-                        mIView.hideLoading();
-                    }
-                },
-                new MyCommonObserver<HttpResult>() {
+            @Override
+            public void run() throws Exception {
+                mIView.hideLoading();
+            }
+        }, new MyCommonObserver<HttpResult>() {
+            @Override
+            public void onResult(HttpResult result) {
+                item.setCollect(add);
+                view.setSelected(add);
+                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + (add ? 1 : -1));
+            }
 
-                    @Override
-                    public void onResult(HttpResult result) {
-                        mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + 1);
-                    }
+            @Override
+            public void onError(HttpThrowable throwable) {
+                mIView.showMessage(throwable.message);
 
-                    @Override
-                    public void onError(HttpThrowable throwable) {
-                        mIView.showMessage(throwable.message);
-
-                    }
-                }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
+            }
+        }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
     }
-
 
 }

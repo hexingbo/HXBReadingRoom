@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class NewArticleAdapter extends HelperStateRecyclerViewAdapter<WxArticleDataBean> {
 
+    private OnItemClickListener<WxArticleDataBean> listener;
+
     public NewArticleAdapter(List<WxArticleDataBean> data, Context context) {
         super(data, context, R.layout.item_new_article);
     }
@@ -51,6 +53,29 @@ public class NewArticleAdapter extends HelperStateRecyclerViewAdapter<WxArticleD
         viewHolder.setVisible(R.id.tv_category, !TextUtils.isEmpty(category));
         viewHolder.setText(R.id.tv_time, TextUtils.isEmpty(item.getNiceDate()) ? "" : "时间：" + item.getNiceDate());
         viewHolder.setVisible(R.id.tv_time, !TextUtils.isEmpty(item.getNiceDate()));
-        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+//        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+        viewHolder.getView(R.id.img_shoucang).setSelected(item.isCollect());
+
+        viewHolder.setOnClickListener(R.id.img_shoucang, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
     }
 }

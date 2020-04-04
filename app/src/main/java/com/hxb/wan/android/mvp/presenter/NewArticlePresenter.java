@@ -1,5 +1,7 @@
 package com.hxb.wan.android.mvp.presenter;
 
+import android.widget.ImageView;
+
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
@@ -37,7 +39,7 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
      */
     public void getNewArticleTopList() {
         page = 0;
-        DevRing.httpManager().commonRequest(mIModel.getNewArticleTopList(),new HttpNetObserver() {
+        DevRing.httpManager().commonRequest(mIModel.getNewArticleTopList(), new HttpNetObserver() {
             @Override
             public void accept(Disposable disposable) throws Exception {
 //                mIView.showLoading();
@@ -68,7 +70,7 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
      * 获取文章列表
      */
     public void getNewArticleList() {
-        DevRing.httpManager().commonRequest(mIModel.getNewArticleList(page),new HttpNetObserver() {
+        DevRing.httpManager().commonRequest(mIModel.getNewArticleList(page), new HttpNetObserver() {
             @Override
             public void accept(Disposable disposable) throws Exception {
 //                mIView.showLoading();
@@ -105,10 +107,14 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
     }
 
     /**
-     * 添加到我的收藏夹
+     * 添加到我的收藏夹或者移除我的收藏夹
+     *
+     * @param view 收藏icon
+     * @param item 当前操作的实体对象
      */
-    public void postCollect(int id) {
-        DevRing.httpManager().commonRequest(mIModel.postCollect(id), new HttpNetObserver() {
+    public void postCollectOrUnCollect(ImageView view, WxArticleDataBean item) {
+        boolean add = !item.isCollect();
+        DevRing.httpManager().commonRequest(mIModel.postCollectOrUnCollect(add, item.getId()), new HttpNetObserver() {
             @Override
             public void accept(Disposable disposable) throws Exception {
                 mIView.showLoading();
@@ -121,7 +127,9 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
         }, new MyCommonObserver<HttpResult>() {
             @Override
             public void onResult(HttpResult result) {
-                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + 1);
+                item.setCollect(add);
+                view.setSelected(add);
+                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + (add ? 1 : -1));
             }
 
             @Override
@@ -131,6 +139,5 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
             }
         }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
     }
-
 
 }

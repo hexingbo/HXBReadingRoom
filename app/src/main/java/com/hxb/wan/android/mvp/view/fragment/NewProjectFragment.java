@@ -3,7 +3,7 @@ package com.hxb.wan.android.mvp.view.fragment;
 
 import android.app.Dialog;
 import android.support.annotation.NonNull;
-import android.view.View;
+import android.widget.ImageView;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewProjectFragmentComponent;
@@ -16,7 +16,6 @@ import com.hxb.wan.android.mvp.view.iview.INewProjectView;
 import com.hxb.wan.android.utils.LayoutManagerUtil;
 import com.ljy.devring.util.RingToast;
 import com.zhouyou.recyclerview.XRecyclerView;
-import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
 import java.util.List;
@@ -82,17 +81,6 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
 
     @Override
     protected void initEvent() {
-        mAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<WxProjectDataBean>() {
-            @Override
-            public void onItemClick(View view, WxProjectDataBean item, int position) {
-                if (view.getId() == R.id.img_shoucang) {
-                    //收藏
-                    mPresenter.postCollect(item.getId());
-                }else {
-                    RingToast.show("点击了item");
-                }
-            }
-        });
     }
 
     @Override
@@ -120,5 +108,16 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
     @Override
     public NewProjectAdapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onItemShoucangClick(ImageView view, WxProjectDataBean item, int position) {
+        //文章的收藏与取消收藏
+        mPresenter.postCollectOrUnCollect(view, item);
+    }
+
+    @Override
+    public void onItemClick(WxProjectDataBean item, int position) {
+        //查看最新项目的详情
     }
 }

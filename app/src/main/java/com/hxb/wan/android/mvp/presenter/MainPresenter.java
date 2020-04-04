@@ -28,6 +28,9 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
     }
 
 
+    /**
+     * 获取广告数据
+     */
     public void getBannerList() {
         DevRing.httpManager().commonRequest(mIModel.getBannerList(), new HttpNetObserver() {
             @Override
@@ -65,7 +68,7 @@ public class MainPresenter extends BasePresenter<IMainView, IMainModel> {
 
             @Override
             public void run() throws Exception {
-                mIView.showLoading();
+                mIView.hideLoading();
             }
         }, new MyCommonObserver<HttpResult>() {
             @Override

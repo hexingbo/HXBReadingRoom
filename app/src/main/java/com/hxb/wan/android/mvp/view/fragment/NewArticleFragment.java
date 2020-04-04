@@ -2,6 +2,7 @@ package com.hxb.wan.android.mvp.view.fragment;
 
 import android.app.Dialog;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewArticleFragmentComponent;
@@ -109,5 +110,16 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
     @Override
     public NewArticleAdapter getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onItemShouCangClick(ImageView view, WxArticleDataBean item, int position) {
+        //文章收藏与取消收藏
+        mPresenter.postCollectOrUnCollect(view, item);
+    }
+
+    @Override
+    public void onItemClick(WxArticleDataBean item, int position) {
+        //查看文章详情
     }
 }

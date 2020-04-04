@@ -314,7 +314,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                         break;
                 }
                 //收起侧边栏
-                mDrawerLayout.closeDrawers();
+//                mDrawerLayout.closeDrawers();
 
                 return false;//true则点击的菜单项会变成选中状态,，false则不会变成选中状态
             }

@@ -25,7 +25,6 @@ public class UserLoginPresenter extends BasePresenter<IUserLoginView, IUserLogin
         super(iView, iModel);
     }
 
-
     /**
      * 用户登录
      *

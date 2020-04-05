@@ -20,6 +20,8 @@ import java.util.List;
  */
 public class MyCollectedAdapter extends HelperStateRecyclerViewAdapter<MyCollectedBean> {
 
+    private OnItemClickListener<MyCollectedBean> listener;
+
     public MyCollectedAdapter(List<MyCollectedBean> data, Context context) {
         super(data, context, R.layout.item_new_article);
     }
@@ -31,7 +33,16 @@ public class MyCollectedAdapter extends HelperStateRecyclerViewAdapter<MyCollect
 
     @Override
     public View getErrorView(ViewGroup parent) {
-        return mLInflater.inflate(R.layout.view_state_error, parent, false);
+        View view = mLInflater.inflate(R.layout.view_state_error, parent, false);
+        view.findViewById(R.id.ll_error_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, null, -1);
+                }
+            }
+        });
+        return view;
     }
 
     @Override
@@ -50,6 +61,28 @@ public class MyCollectedAdapter extends HelperStateRecyclerViewAdapter<MyCollect
         viewHolder.setVisible(R.id.tv_category, !TextUtils.isEmpty(item.getChapterName()));
         viewHolder.setText(R.id.tv_time, TextUtils.isEmpty(item.getNiceDate()) ? "" : "时间：" + item.getNiceDate());
         viewHolder.setVisible(R.id.tv_time, !TextUtils.isEmpty(item.getNiceDate()));
-        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+//        viewHolder.setImageResource(R.id.img_shoucang, R.mipmap.ic_shoucang_n);
+        viewHolder.getView(R.id.img_shoucang).setSelected(true);
+        viewHolder.setOnClickListener(R.id.img_shoucang, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, item, position);
+                }
+            }
+        });
+    }
+
+    @Override
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
     }
 }

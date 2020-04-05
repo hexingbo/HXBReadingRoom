@@ -126,11 +126,13 @@ public interface HxbWanAndroidService {
     /**
      * 取消收藏(我的收藏页面)
      *
-     * @param id 文章id，
+     * @param id       文章id，
+     * @param originId originId:列表页下发，无则为-1
      * @return
      */
+    @FormUrlEncoded
     @POST("lg/uncollect/{id}/json")
-    Observable<HttpResult> postUncollect(@Path("id") int id);
+    Observable<HttpResult> postUncollect(@Path("id") int id, @Field("originId") int originId);
 
 
 }

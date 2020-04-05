@@ -18,6 +18,7 @@ import com.ljy.devring.util.RxLifecycleUtil;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -33,6 +34,7 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
     }
 
     private int page;
+    private List<WxArticleDataBean> listTop = new ArrayList<>();
 
     /**
      * 获取置顶文章
@@ -40,36 +42,32 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
     public void getNewArticleTopList() {
         page = 0;
         DevRing.httpManager().commonRequest(mIModel.getNewArticleTopList(), new HttpNetObserver() {
-            @Override
-            public void accept(Disposable disposable) throws Exception {
-//                mIView.showLoading();
-                RingLog.d("请求开始");
-            }
+                    @Override
+                    public void accept(Disposable disposable) throws Exception {
 
-            @Override
-            public void run() throws Exception {
-//                mIView.hideLoading();
-                RingLog.d("请求结束");
-                mIView.getRecyclerView().refreshComplete();
-            }
-        }, new MyCommonObserver<HttpResult<List<WxArticleDataBean>>>() {
-            @Override
-            public void onResult(HttpResult<List<WxArticleDataBean>> result) {
-                mIView.getAdapter().setListAll(result.getData());
-                mIView.getRecyclerView().setLoadingMoreEnabled(true);
-            }
+                    }
 
-            @Override
-            public void onError(HttpThrowable throwable) {
-                getNewArticleList();
-            }
-        }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
+                    @Override
+                    public void run() throws Exception {
+                        getNewArticleList(true);
+                    }
+                },
+                new MyCommonObserver<HttpResult<List<WxArticleDataBean>>>() {
+                    @Override
+                    public void onResult(HttpResult<List<WxArticleDataBean>> result) {
+                        listTop.addAll(result.getData());
+                    }
+
+                    @Override
+                    public void onError(HttpThrowable throwable) {
+                    }
+                }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
     }
 
     /**
      * 获取文章列表
      */
-    public void getNewArticleList() {
+    public void getNewArticleList(boolean isRefresh) {
         DevRing.httpManager().commonRequest(mIModel.getNewArticleList(page), new HttpNetObserver() {
             @Override
             public void accept(Disposable disposable) throws Exception {
@@ -79,29 +77,45 @@ public class NewArticlePresenter extends BasePresenter<INewArticleView, INewArti
 
             @Override
             public void run() throws Exception {
-//                mIView.hideLoading();
-                RingLog.d("请求结束");
-                mIView.getRecyclerView().loadMoreComplete();
+                if (isRefresh) {
+                    mIView.getRecyclerView().refreshComplete();
+                } else {
+//                            mIView.getRecyclerView().loadMoreComplete();
+                }
             }
         }, new MyCommonObserver<HttpResult<WxArticleListData>>() {
             @Override
             public void onResult(HttpResult<WxArticleListData> result) {
-                RingLog.d("返回数据-->" + result.toString());
-                if (result.getData() != null) {
-                    page += 1;
-                    mIView.getAdapter().addItemsToLast(result.getData().getDatas());
-                } else {
-                    if (mIView.getAdapter().getList().size() == 0)
-                        mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_EMPTY);
-                }
                 mIView.getRecyclerView().setLoadingMoreEnabled(true);
+                if (result.getData() != null && result.getData().getDatas() != null && result.getData().getDatas().size() != 0) {
+                    page += 1;
+                    if (isRefresh) {
+                        mIView.getAdapter().setListAll(result.getData().getDatas());
+                        mIView.getAdapter().addItemsToHead(listTop);
+                    } else {
+                        mIView.getAdapter().addItemsToLast(result.getData().getDatas());
+                    }
+                    mIView.getRecyclerView().setNoMore(false);
+                } else {
+                    if (isRefresh) {
+                        mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_EMPTY);
+                    } else {
+                        mIView.getRecyclerView().setNoMore(true);
+                    }
+                }
             }
 
             @Override
             public void onError(HttpThrowable throwable) {
-                if (mIView.getAdapter().getList().size() == 0)
-                    mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_ERROR);
-
+                if (isRefresh) {
+                    mIView.getAdapter().addItemsToHead(listTop);
+                    if (mIView.getAdapter().getList().size() == 0)
+                        mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_ERROR);
+                } else {
+                    mIView.getRecyclerView().setNoMore(true);
+                    mIView.getRecyclerView().loadMoreComplete();
+                    mIView.showMessage(throwable.message);
+                }
             }
         }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
     }

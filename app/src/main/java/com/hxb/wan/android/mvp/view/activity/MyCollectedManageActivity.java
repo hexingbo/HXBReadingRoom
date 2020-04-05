@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hxb.wan.android.R;
@@ -71,7 +72,6 @@ public class MyCollectedManageActivity extends BaseActivity<MyCollectedManagePre
 
     @Override
     protected void initData(Bundle bundle) {
-      
         mAdapter.clear();
         mAdapter.setState(HelperStateRecyclerViewAdapter.STATE_LOADING);
         mPresenter.getMyCollectedList(true);
@@ -112,6 +112,17 @@ public class MyCollectedManageActivity extends BaseActivity<MyCollectedManagePre
     @Override
     public HelperStateRecyclerViewAdapter<MyCollectedBean> getAdapter() {
         return mAdapter;
+    }
+
+    @Override
+    public void onItemShouCangClick(ImageView view, MyCollectedBean item, int position) {
+        //将文章移除收藏夹
+        mPresenter.postUncollect(item,position);
+    }
+
+    @Override
+    public void onItemClick(MyCollectedBean item, int position) {
+        //查看文章详情
     }
 
 

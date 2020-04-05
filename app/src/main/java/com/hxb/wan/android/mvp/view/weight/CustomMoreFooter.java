@@ -14,7 +14,7 @@ import com.zhouyou.recyclerview.refresh.BaseMoreFooter;
 
 /**
  * <p>描述：定制了加载更多动画</p>
- * 
+ *
  * <p>
  * 作者： zhouyou<br>
  * 日期： 2016/12/14 9:47<br>
@@ -24,6 +24,7 @@ public class CustomMoreFooter extends BaseMoreFooter {
     private AnimationDrawable mAnimationDrawable;
     private LinearLayout allLayout;
     private TextView mTextView;
+    private ImageView mImageView;
 
     public CustomMoreFooter(Context context) {
         super(context);
@@ -37,9 +38,9 @@ public class CustomMoreFooter extends BaseMoreFooter {
     protected void initView() {
         super.initView();//有居中显示功能，如果不需要就去掉super.initView();
         allLayout = (LinearLayout) LayoutInflater.from(getContext()).inflate(R.layout.pull_to_refresh_clife, null);
-        ImageView imageView = (ImageView) allLayout.findViewById(R.id.lodimg);
-        imageView.setImageResource(R.drawable.icon_loading_animation);
-        mAnimationDrawable = (AnimationDrawable) imageView.getDrawable();
+        mImageView = (ImageView) allLayout.findViewById(R.id.lodimg);
+        mImageView.setImageResource(R.drawable.icon_loading_animation);
+        mAnimationDrawable = (AnimationDrawable) mImageView.getDrawable();
         mTextView = (TextView) allLayout.findViewById(R.id.lodtext);
         addView(allLayout);
     }
@@ -51,20 +52,25 @@ public class CustomMoreFooter extends BaseMoreFooter {
         //选择自定义需要处理的状态：STATE_LOADING、STATE_COMPLETE、STATE_NOMORE、STATE_NOMORE
         switch (state) {
             case STATE_LOADING:
-                this.setVisibility(View.VISIBLE);
                 mAnimationDrawable.start();
                 mTextView.setText("努力加载中...");
                 mTextView.setVisibility(VISIBLE);
+                mImageView.setVisibility(VISIBLE);
+                this.setVisibility(View.VISIBLE);
                 break;
             case STATE_COMPLETE:
-                this.setVisibility(View.GONE);
                 mAnimationDrawable.stop();
                 mTextView.setText("加载完成");
+                mTextView.setVisibility(VISIBLE);
+                mImageView.setVisibility(VISIBLE);
+                this.setVisibility(View.GONE);
                 break;
             case STATE_NOMORE:
                 mAnimationDrawable.stop();
-                mTextView.setText("没有更多");
-                this.setVisibility(View.GONE);
+                mTextView.setText("没有更多数据");
+                mTextView.setVisibility(VISIBLE);
+                mImageView.setVisibility(GONE);
+                this.setVisibility(View.VISIBLE);
                 break;
         }
     }

@@ -2,6 +2,7 @@ package com.hxb.wan.android.mvp.view.fragment;
 
 import android.app.Dialog;
 import android.support.annotation.NonNull;
+import android.widget.Adapter;
 import android.widget.ImageView;
 
 import com.hxb.wan.android.R;
@@ -68,7 +69,7 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
             @Override
             public void onLoadMore() {
                 //加载更多
-                mPresenter.getNewArticleList();
+                mPresenter.getNewArticleList(false);
             }
         }).setAdapter(mAdapter);
     }
@@ -82,7 +83,6 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
 
     @Override
     protected void initEvent() {
-
     }
 
     @Override

@@ -17,7 +17,8 @@
         <activity android:name=".mvp.view.activity.AboutUsActivity" />
         <activity android:name=".mvp.view.activity.UserRegisterActivity" />
         <activity android:name=".mvp.view.activity.UserLoginActivity" />
-        <activity android:name=".mvp.view.activity.StartActivity">
+        <activity android:name=".mvp.view.activity.StartActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

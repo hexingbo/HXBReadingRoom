@@ -1,8 +1,10 @@
 package com.hxb.wan.android.mvp.presenter;
 
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
+import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.MyCollectListData;
+import com.hxb.wan.android.mvp.model.entity.res.MyCollectedBean;
 import com.hxb.wan.android.mvp.model.imodel.IMyCollectedManageModel;
 import com.hxb.wan.android.mvp.presenter.base.BasePresenter;
 import com.hxb.wan.android.mvp.view.iview.IMyCollectedManageView;
@@ -36,7 +38,7 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
                         if (isRefresh) {
                             mIView.getRecyclerView().refreshComplete();
                         } else {
-                            mIView.getRecyclerView().loadMoreComplete();
+//                            mIView.getRecyclerView().loadMoreComplete();
                         }
                     }
                 }
@@ -44,12 +46,20 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
 
                     @Override
                     public void onResult(HttpResult<MyCollectListData> result) {
-                        if (result.getData() != null) {
+                        mIView.getRecyclerView().setLoadingMoreEnabled(true);
+                        if (result.getData() != null && result.getData().getDatas() != null && result.getData().getDatas().size() != 0) {
+                            page += 1;
                             if (isRefresh) {
                                 mIView.getAdapter().setListAll(result.getData().getDatas());
-                                mIView.getRecyclerView().setLoadingMoreEnabled(true);
                             } else {
                                 mIView.getAdapter().addItemsToLast(result.getData().getDatas());
+                            }
+                            mIView.getRecyclerView().setNoMore(false);
+                        } else {
+                            if (isRefresh) {
+                                mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_EMPTY);
+                            } else {
+                                mIView.getRecyclerView().setNoMore(true);
                             }
                         }
                     }
@@ -58,13 +68,44 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
                     public void onError(HttpThrowable throwable) {
                         if (isRefresh) {
                             mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_ERROR);
-                            mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_NORMAL);
                         } else {
+                            mIView.getRecyclerView().loadMoreComplete();
                             mIView.showMessage(throwable.message);
                         }
-
                     }
                 }, RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY));
+    }
+
+    /**
+     * 将文章移除收藏夹
+     *
+     * @param bean
+     * @param position
+     */
+    public void postUncollect(MyCollectedBean bean, int position) {
+        DevRing.httpManager().commonRequest(mIModel.postUnCollect(bean.getId(), bean.getOriginId() <= 0 ? -1 : bean.getOriginId()), new HttpNetObserver() {
+            @Override
+            public void accept(Disposable disposable) throws Exception {
+                mIView.showLoading();
+            }
+
+            @Override
+            public void run() throws Exception {
+                mIView.hideLoading();
+            }
+        }, new MyCommonObserver<HttpResult>() {
+            @Override
+            public void onResult(HttpResult result) {
+                mIView.getAdapter().removeToIndex(position);
+                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() - 1);
+            }
+
+            @Override
+            public void onError(HttpThrowable throwable) {
+                mIView.showMessage(throwable.message);
+
+            }
+        }, RxLifecycleUtil.bindUntilEvent(mIView, ActivityEvent.DESTROY));
     }
 
 }

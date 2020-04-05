@@ -14,6 +14,7 @@ import com.hxb.wan.android.mvp.view.iview.INewProjectView;
 import com.hxb.wan.android.mvp.view.weight.ProgresDialog;
 import com.ljy.devring.di.scope.FragmentScope;
 import com.zhouyou.recyclerview.adapter.BaseRecyclerViewAdapter;
+import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,18 +64,23 @@ public class NewProjectFragmentModule {
     @FragmentScope
     @Provides
     NewProjectAdapter provideNewProjectAdapter(List<WxProjectDataBean> list,INewProjectView iView) {
-        NewProjectAdapter adapter = new NewProjectAdapter(list, iView.getActivity());
-        adapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<WxProjectDataBean>() {
+        NewProjectAdapter mAdapter = new NewProjectAdapter(list, iView.getActivity());
+        mAdapter.setOnItemClickListener(new BaseRecyclerViewAdapter.OnItemClickListener<WxProjectDataBean>() {
             @Override
             public void onItemClick(View view, WxProjectDataBean item, int position) {
-                if (view.getId() == R.id.img_shoucang) {
+                if (view.getId() == R.id.ll_error_view) {
+                    //请求失败刷新数据
+                    mAdapter.clear();
+                    mAdapter.setState(HelperStateRecyclerViewAdapter.STATE_LOADING);
+                    iView.getRecyclerView().refresh();
+                }else if (view.getId() == R.id.img_shoucang) {
                     mIView.onItemShoucangClick((ImageView) view, item, position);
                 } else {
                     mIView.onItemClick(item, position);
                 }
             }
         });
-        return adapter;
+        return mAdapter;
     }
     
 }

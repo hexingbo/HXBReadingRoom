@@ -12,4 +12,10 @@ public interface IMyCollectedManageModel extends IBaseModel {
     //获取最新文章
     Observable<HttpResult<MyCollectListData>> getMyCollectedList(int page);
 
+    //从我的收藏夹移除文章
+    Observable<HttpResult> postUnCollect(int id,int originId);
+
+    //更新侧滑栏菜单收藏夹数量
+    void updateMenuUserCollectNumber(int number);
+
 }

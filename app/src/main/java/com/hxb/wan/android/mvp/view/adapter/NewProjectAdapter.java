@@ -34,7 +34,16 @@ public class NewProjectAdapter extends HelperStateRecyclerViewAdapter<WxProjectD
 
     @Override
     public View getErrorView(ViewGroup parent) {
-        return mLInflater.inflate(R.layout.view_state_error, parent, false);
+        View view = mLInflater.inflate(R.layout.view_state_error, parent, false);
+        view.findViewById(R.id.ll_error_view).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null) {
+                    listener.onItemClick(v, null, -1);
+                }
+            }
+        });
+        return view;
     }
 
     @Override

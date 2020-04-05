@@ -31,7 +31,7 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
         super(iView, iModel);
     }
 
-    int page;
+    private int page;
 
     public void getNewProjectList(boolean isRefresh) {
         DevRing.httpManager().commonRequest(mIModel.getNewProjectList(isRefresh ? page = 0 : page),
@@ -49,18 +49,26 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
                         if (isRefresh) {
                             mIView.getRecyclerView().refreshComplete();
                         } else {
-                            mIView.getRecyclerView().loadMoreComplete();
+//                            mIView.getRecyclerView().loadMoreComplete();
                         }
                     }
                 }, new MyCommonObserver<HttpResult<WxProjectListData>>() {
                     @Override
                     public void onResult(HttpResult<WxProjectListData> result) {
-                        if (result.getData() != null) {
+                        mIView.getRecyclerView().setLoadingMoreEnabled(true);
+                        if (result.getData() != null && result.getData().getDatas() != null && result.getData().getDatas().size() != 0) {
+                            page += 1;
                             if (isRefresh) {
                                 mIView.getAdapter().setListAll(result.getData().getDatas());
-                                mIView.getRecyclerView().setLoadingMoreEnabled(true);
                             } else {
                                 mIView.getAdapter().addItemsToLast(result.getData().getDatas());
+                            }
+                            mIView.getRecyclerView().setNoMore(false);
+                        } else {
+                            if (isRefresh) {
+                                mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_EMPTY);
+                            } else {
+                                mIView.getRecyclerView().setNoMore(true);
                             }
                         }
                     }
@@ -70,9 +78,9 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
                         if (isRefresh) {
                             mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_ERROR);
                         } else {
+                            mIView.getRecyclerView().loadMoreComplete();
                             mIView.showMessage(throwable.message);
                         }
-
                     }
                 }, RxLifecycleUtil.bindUntilEvent(mIView, FragmentEvent.DESTROY));
     }

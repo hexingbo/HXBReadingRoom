@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewProjectFragmentComponent;
 import com.hxb.wan.android.di.module.fragment.NewProjectFragmentModule;
-import com.hxb.wan.android.mvp.model.entity.event.UncollectArticleEvent;
+import com.hxb.wan.android.mvp.model.entity.event.UserCollectEvent;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectDataBean;
 import com.hxb.wan.android.mvp.presenter.NewProjectPresenter;
 import com.hxb.wan.android.mvp.view.adapter.NewProjectAdapter;
@@ -135,7 +135,7 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
     //接收事件总线发来的事件
 //    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
-    public void handleEvent(UncollectArticleEvent event) {
+    public void handleEvent(UserCollectEvent event) {
         int p = -1;
         WxProjectDataBean bean = null;
         switch (event.getEm()) {

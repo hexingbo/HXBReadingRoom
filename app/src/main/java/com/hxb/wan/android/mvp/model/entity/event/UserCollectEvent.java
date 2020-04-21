@@ -1,17 +1,19 @@
 package com.hxb.wan.android.mvp.model.entity.event;
 
+import com.hxb.wan.android.mvp.model.entity.em.UserCollectEnum;
+
 /**
  * @Author :hexingbo
  * @Date :2020/4/21
- * @FileName： UncollectArticleEvent
+ * @FileName： UserCollectEvent
  * @Describe :取消收藏的消息对象id
  */
-public class UncollectArticleEvent {
+public class UserCollectEvent {
     private int id;
     private boolean collect;
-    private UserCollectEm em;
+    private UserCollectEnum em;
 
-    public UncollectArticleEvent(int originId, boolean collect,UserCollectEm em) {
+    public UserCollectEvent(int originId, boolean collect, UserCollectEnum em) {
         this.id = originId;
         this.collect = collect;
         this.em=em;
@@ -33,11 +35,11 @@ public class UncollectArticleEvent {
         this.collect = collect;
     }
 
-    public UserCollectEm getEm() {
+    public UserCollectEnum getEm() {
         return em;
     }
 
-    public void setEm(UserCollectEm em) {
+    public void setEm(UserCollectEnum em) {
         this.em = em;
     }
 }

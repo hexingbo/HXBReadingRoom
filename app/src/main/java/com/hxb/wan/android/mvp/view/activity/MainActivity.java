@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             }
         });
         //banner设置方法全部调用完毕时最后调用
-        mBanner.start();
+//        mBanner.start();
     }
 
     @Override
@@ -243,11 +243,13 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+//                mBanner.stopAutoPlay();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+//                mBanner.startAutoPlay();
             }
         };
         mDrawerToggle.syncState();
@@ -454,7 +456,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     //接收事件总线发来的事件
-    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+//    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
     public void handleEvent(MainDataEvent event) {
 //        if (event.getLogin()) {

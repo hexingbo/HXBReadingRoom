@@ -1,6 +1,8 @@
 package com.hxb.wan.android.mvp.model;
 
 import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
+import com.hxb.wan.android.mvp.model.entity.event.UncollectArticleEvent;
+import com.hxb.wan.android.mvp.model.entity.event.UserCollectEm;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.MyCollectListData;
 import com.hxb.wan.android.mvp.model.http.HxbWanAndroidService;
@@ -25,8 +27,9 @@ public class MyCollectedManageModel implements IMyCollectedManageModel {
     }
 
     @Override
-    public void updateMenuUserCollectNumber(int number) {
+    public void updateMenuUserCollectNumber(int number,int originId) {
         DevRing.busManager().postEvent(MainDataEvent.init().setUserCollectedNumber(number));
+        DevRing.busManager().postEvent(new UncollectArticleEvent(originId,false, UserCollectEm.CollectedManage));
     }
 
 

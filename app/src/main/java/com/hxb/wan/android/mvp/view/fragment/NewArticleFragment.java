@@ -2,12 +2,12 @@ package com.hxb.wan.android.mvp.view.fragment;
 
 import android.app.Dialog;
 import android.support.annotation.NonNull;
-import android.widget.Adapter;
 import android.widget.ImageView;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewArticleFragmentComponent;
 import com.hxb.wan.android.di.module.fragment.NewArticleFragmentModule;
+import com.hxb.wan.android.mvp.model.entity.event.UncollectArticleEvent;
 import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
 import com.hxb.wan.android.mvp.presenter.NewArticlePresenter;
 import com.hxb.wan.android.mvp.view.adapter.NewArticleAdapter;
@@ -18,7 +18,6 @@ import com.ljy.devring.util.RingToast;
 import com.zhouyou.recyclerview.XRecyclerView;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -45,6 +44,8 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
     @Inject
     Dialog mDialog;
 
+    private WxArticleDataBean currentBean;
+    private int currentPosition;
 
     @Override
     protected boolean isLazyLoad() {
@@ -115,11 +116,48 @@ public class NewArticleFragment extends BaseFragment<NewArticlePresenter> implem
     @Override
     public void onItemShouCangClick(ImageView view, WxArticleDataBean item, int position) {
         //文章收藏与取消收藏
-        mPresenter.postCollectOrUnCollect(view, item);
+        currentPosition = position;
+        currentBean = item;
+        mPresenter.postCollectOrUnCollect(item);
     }
 
     @Override
     public void onItemClick(WxArticleDataBean item, int position) {
         //查看文章详情
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    //接收事件总线发来的事件
+//    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+    @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
+    public void handleEvent(UncollectArticleEvent event) {
+        int p = -1;
+        WxArticleDataBean bean = null;
+        switch (event.getEm()) {
+            case NewArticle:
+                p = currentPosition;
+                bean = currentBean;
+                bean.setCollect(event.isCollect());
+                break;
+            case NewProject:
+            case CollectedManage:
+                for (int i = 0; i < mAdapter.getList().size(); i++) {
+                    bean = mAdapter.getList().get(i);
+                    if (bean.getId() == event.getId()) {
+                        p = i;
+                        bean.setCollect(event.isCollect());
+                        break;
+                    }
+                }
+                break;
+        }
+        if (p != -1) {
+            mAdapter.alterObj(p, bean);
+        }
+
     }
 }

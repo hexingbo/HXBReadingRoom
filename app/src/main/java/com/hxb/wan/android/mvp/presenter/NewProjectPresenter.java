@@ -88,12 +88,11 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
     /**
      * 添加到我的收藏夹或者移除我的收藏夹
      *
-     * @param view 收藏icon
      * @param item 当前操作的实体对象
      */
-    public void postCollectOrUnCollect(ImageView view, WxProjectDataBean item) {
-        boolean add = !item.isCollect();
-        DevRing.httpManager().commonRequest(mIModel.postCollectOrUnCollect(add, item.getId()), new HttpNetObserver() {
+    public void postCollectOrUnCollect(WxProjectDataBean item) {
+        boolean collect = !item.isCollect();
+        DevRing.httpManager().commonRequest(mIModel.postCollectOrUnCollect(collect, item.getId()), new HttpNetObserver() {
             @Override
             public void accept(Disposable disposable) throws Exception {
                 mIView.showLoading();
@@ -106,9 +105,8 @@ public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProj
         }, new MyCommonObserver<HttpResult>() {
             @Override
             public void onResult(HttpResult result) {
-                item.setCollect(add);
-                view.setSelected(add);
-                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + (add ? 1 : -1));
+                item.setCollect(collect);
+                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() + (collect ? 1 : -1),item.getId(),collect);
             }
 
             @Override

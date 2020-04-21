@@ -1,6 +1,8 @@
 package com.hxb.wan.android.mvp.model;
 
 import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
+import com.hxb.wan.android.mvp.model.entity.event.UncollectArticleEvent;
+import com.hxb.wan.android.mvp.model.entity.event.UserCollectEm;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectListData;
 import com.hxb.wan.android.mvp.model.http.HxbWanAndroidService;
@@ -27,8 +29,9 @@ public class NewProjectModel implements INewProjectModel {
     }
 
     @Override
-    public void updateMenuUserCollectNumber(int number) {
+    public void updateMenuUserCollectNumber(int number,int id,boolean collect) {
         DevRing.busManager().postEvent(MainDataEvent.init().setUserCollectedNumber(number));
+        DevRing.busManager().postEvent(new UncollectArticleEvent(id, collect, UserCollectEm.NewArticle));
     }
 
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.di.component.fragment.DaggerNewProjectFragmentComponent;
 import com.hxb.wan.android.di.module.fragment.NewProjectFragmentModule;
+import com.hxb.wan.android.mvp.model.entity.event.UncollectArticleEvent;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectDataBean;
 import com.hxb.wan.android.mvp.presenter.NewProjectPresenter;
 import com.hxb.wan.android.mvp.view.adapter.NewProjectAdapter;
@@ -43,6 +44,9 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
 
     @Inject
     Dialog mDialog;
+
+    private WxProjectDataBean currentBean;
+    private int currentPosition;
 
     @Override
     protected boolean isLazyLoad() {
@@ -113,11 +117,47 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
     @Override
     public void onItemShoucangClick(ImageView view, WxProjectDataBean item, int position) {
         //文章的收藏与取消收藏
-        mPresenter.postCollectOrUnCollect(view, item);
+        currentPosition = position;
+        currentBean = item;
+        mPresenter.postCollectOrUnCollect(item);
     }
 
     @Override
     public void onItemClick(WxProjectDataBean item, int position) {
         //查看最新项目的详情
+    }
+
+    @Override
+    public boolean isUseEventBus() {
+        return true;
+    }
+
+    //接收事件总线发来的事件
+//    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+    @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
+    public void handleEvent(UncollectArticleEvent event) {
+        int p = -1;
+        WxProjectDataBean bean = null;
+        switch (event.getEm()) {
+            case NewProject:
+                p = currentPosition;
+                bean = currentBean;
+                bean.setCollect(event.isCollect());
+                break;
+            case NewArticle:
+            case CollectedManage:
+                for (int i = 0; i < mAdapter.getList().size(); i++) {
+                    bean = mAdapter.getList().get(i);
+                    if (bean.getId() == event.getId()) {
+                        p = i;
+                        bean.setCollect(event.isCollect());
+                        break;
+                    }
+                }
+                break;
+        }
+        if (p != -1) {
+            mAdapter.alterObj(p, bean);
+        }
     }
 }

@@ -1,7 +1,6 @@
 package com.hxb.wan.android.mvp.presenter;
 
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
-import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
 import com.hxb.wan.android.mvp.model.entity.res.MyCollectListData;
 import com.hxb.wan.android.mvp.model.entity.res.MyCollectedBean;
@@ -25,6 +24,7 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
     }
 
     int page;
+    int total = 0;
 
     public void getMyCollectedList(boolean isRefresh) {
         DevRing.httpManager().commonRequest(mIModel.getMyCollectedList(isRefresh ? page = 0 : page), new HttpNetObserver() {
@@ -48,6 +48,7 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
                     public void onResult(HttpResult<MyCollectListData> result) {
                         mIView.getRecyclerView().setLoadingMoreEnabled(true);
                         if (result.getData() != null && result.getData().getDatas() != null && result.getData().getDatas().size() != 0) {
+                            total = result.getData().getTotal();
                             page += 1;
                             if (isRefresh) {
                                 mIView.getAdapter().setListAll(result.getData().getDatas());
@@ -56,6 +57,7 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
                             }
                             mIView.getRecyclerView().setNoMore(false);
                         } else {
+                            total = 0;
                             if (isRefresh) {
                                 mIView.getAdapter().setState(HelperStateRecyclerViewAdapter.STATE_EMPTY);
                             } else {
@@ -97,7 +99,7 @@ public class MyCollectedManagePresenter extends BasePresenter<IMyCollectedManage
             @Override
             public void onResult(HttpResult result) {
                 mIView.getAdapter().removeToIndex(position);
-                mIModel.updateMenuUserCollectNumber(MainDataEvent.init().getUserCollectedNumber() - 1);
+                mIModel.updateMenuUserCollectNumber(total - 1,bean.getOriginId());
             }
 
             @Override

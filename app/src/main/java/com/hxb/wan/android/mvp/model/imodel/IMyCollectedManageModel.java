@@ -16,6 +16,6 @@ public interface IMyCollectedManageModel extends IBaseModel {
     Observable<HttpResult> postUnCollect(int id,int originId);
 
     //更新侧滑栏菜单收藏夹数量
-    void updateMenuUserCollectNumber(int number);
+    void updateMenuUserCollectNumber(int number,int originId);
 
 }

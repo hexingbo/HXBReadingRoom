@@ -216,7 +216,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         }
 
         boolean login = MainDataEvent.init().getLogin();
-        mTvUserName.setText(login ? (TextUtils.isEmpty(MainDataEvent.init().getUserName()) ? "用户昵称" : MainDataEvent.init().getUserName()) : "未登录");
+        mTvUserName.setText(login ? (TextUtils.isEmpty(MainDataEvent.init().getUserName()) ? getString(R.string.str_nick_name) : MainDataEvent.init().getUserName()) : getString(R.string.str_login_no));
 
         mTvUserName.setEnabled(!login);
         mTvUserName.setOnClickListener(new View.OnClickListener() {

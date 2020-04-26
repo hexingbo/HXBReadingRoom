@@ -52,7 +52,7 @@ public class MyCollectedManageActivity extends BaseActivity<MyCollectedManagePre
     @Override
     protected void initView(Bundle bundle) {
         DaggerMyCollectedManageActivityComponent.builder().myCollectedManageActivityModule(new MyCollectedManageActivityModule(this)).build().inject(this);
-        publicToolbarTitle.setText("收藏夹");
+        publicToolbarTitle.setText(getString(R.string.str_shoucangjia));
 
         LayoutManagerUtil.initView(mRecyclerView, true, new XRecyclerView.LoadingListener() {
             @Override

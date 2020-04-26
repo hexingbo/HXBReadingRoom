@@ -57,7 +57,7 @@ public class UserLoginActivity extends BaseActivity<UserLoginPresenter> implemen
     protected void initView(Bundle bundle) {
         DaggerUserLoginActivityComponent.builder().userLoginActivityModule(new UserLoginActivityModule(this)).build().inject(this);
         publicToolbarBack.setVisibility(View.INVISIBLE);
-        publicToolbarTitle.setText("登录");
+        publicToolbarTitle.setText(getString(R.string.str_denglu));
     }
 
     @Override

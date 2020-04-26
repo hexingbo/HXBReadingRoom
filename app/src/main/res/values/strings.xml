@@ -13,9 +13,28 @@
     <!-- drawerlayout -->
     <string name="open">打开</string>
     <string name="close">关闭</string>
+
+    <string name="strShoucangjia">我的收藏夹（%d）</string>
+    <string name="str_guangchang">干货广场</string>
+    <string name="str_daohang">导航菜单</string>
+    <string name="str_xiangmu">项目大厅</string>
+    <string name="str_tixi">知识体系</string>
+    <string name="str_gongjulan">常用工具</string>
+    <string name="str_gongzhonghao">公众号</string>
+    <string name="str_wenda">问答交流</string>
+    <string name="str_about_us">关于我们</string>
+    <string name="str_login_out">退出登录</string>
     
     <string name="exit_confirm">再点一次退出程序</string>
-    <string name="strShoucangjia">我的收藏夹（%d）</string>
+    <string name="str_denglu">登录</string>
+    <string name="str_hint_input_user_name">请输入用户名</string>
+    <string name="str_hint_input_user_pwd">请输入密码</string>
+    <string name="str_zhuce">注册</string>
+    <string name="str_data_empty">暂无数据</string>
+    <string name="str_data_error">数据加载失败\n点击重试</string>
+    <string name="str_nick_name">用户昵称</string>
+    <string name="str_login_no">未登录</string>
+    <string name="str_shoucangjia">收藏夹</string>
 
 
 </resources>

@@ -27,7 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="数据加载失败\n点击重试"
+            android:text="@string/str_data_error"
             android:textColor="#999999"
             android:textSize="@dimen/public_font_18sp" />
     </LinearLayout>

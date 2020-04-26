@@ -55,7 +55,7 @@ public class UserRegisterActivity extends BaseActivity<UserRegisterPresenter> im
     @Override
     protected void initView(Bundle bundle) {
         DaggerUserRegisterActivityComponent.builder().userRegisterActivityModule(new UserRegisterActivityModule(this)).build().inject(this);
-        publicToolbarTitle.setText("注册");
+        publicToolbarTitle.setText(getString(R.string.str_zhuce));
     }
 
     @Override

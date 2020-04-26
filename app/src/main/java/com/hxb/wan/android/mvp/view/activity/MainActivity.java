@@ -218,6 +218,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
         boolean login = MainDataEvent.init().getLogin();
         mTvUserName.setText(login ? (TextUtils.isEmpty(MainDataEvent.init().getUserName()) ? "用户昵称" : MainDataEvent.init().getUserName()) : "未登录");
 
+        mTvUserName.setEnabled(!login);
         mTvUserName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -456,18 +457,20 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
     }
 
     //接收事件总线发来的事件
-//    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
     public void handleEvent(MainDataEvent event) {
-//        if (event.getLogin()) {
-//            //收起侧边栏
-//            mDrawerLayout.closeDrawers();
-//        }
-        if (event.getLogin()) {
-            //更新侧滑栏中菜单项的用户信息
-            setUserInfo();//更新用户信息
+        if (!event.getLogin()) {
+            //收起侧边栏
+            mDrawerLayout.closeDrawers();
         }
+        //更新侧滑栏中菜单项的用户信息
+        setUserInfo();//更新用户信息
 
+        if (mNewArticleFragment.getRecyclerView() != null)
+            mNewArticleFragment.getRecyclerView().refresh();
+        if (mNewProjectFragment.getRecyclerView() != null)
+            mNewProjectFragment.getRecyclerView().refresh();
     }
 
 }

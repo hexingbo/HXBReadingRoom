@@ -133,7 +133,7 @@ public class NewProjectFragment extends BaseFragment<NewProjectPresenter> implem
     }
 
     //接收事件总线发来的事件
-//    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
+    @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hxb.wan.android.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
     public void handleEvent(UserCollectEvent event) {
         int p = -1;

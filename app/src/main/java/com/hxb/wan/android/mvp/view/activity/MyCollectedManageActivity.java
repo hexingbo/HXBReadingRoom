@@ -23,7 +23,6 @@ import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 import javax.inject.Inject;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -46,7 +45,7 @@ public class MyCollectedManageActivity extends BaseActivity<MyCollectedManagePre
 
     @Override
     protected int getContentLayout() {
-        return R.layout.layout_recyclerview_title;
+        return R.layout.public_layout_rcy_title;
     }
 
     @Override

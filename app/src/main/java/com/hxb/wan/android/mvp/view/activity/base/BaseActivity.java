@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.hxb.wan.android.R;
 import com.hxb.wan.android.utils.statusbar.StatusBarUtil;
@@ -77,6 +78,16 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
         initView(savedInstanceState);//由具体的activity实现，做视图相关的初始化
         initData(savedInstanceState);//由具体的activity实现，做数据的初始化
         initEvent();//由具体的activity实现，做事件监听的初始化
+        View view = findViewById(R.id.public_toolbar_back);
+        if (view!=null){
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
+                }
+            });
+        }
+
     }
 
     //初始化状态栏/导航栏颜色，需在设置了布局后再调用
@@ -176,6 +187,21 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
 
         }
     }
-    
+
+    @Override
+    public void setTitle(CharSequence title) {
+        super.setTitle(title);
+        TextView textView = findViewById(R.id.public_toolbar_title);
+        if (textView != null)
+            textView.setText(title);
+    }
+
+    @Override
+    public void setTitle(int titleId) {
+        super.setTitle(titleId);
+        TextView textView = findViewById(R.id.public_toolbar_title);
+        if (textView != null)
+            textView.setText(titleId);
+    }
 
 }

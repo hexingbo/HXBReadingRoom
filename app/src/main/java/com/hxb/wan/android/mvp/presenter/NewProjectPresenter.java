@@ -1,16 +1,13 @@
 package com.hxb.wan.android.mvp.presenter;
 
-import android.widget.ImageView;
-
 import com.hxb.wan.android.mvp.model.Observer.MyCommonObserver;
 import com.hxb.wan.android.mvp.model.entity.event.MainDataEvent;
 import com.hxb.wan.android.mvp.model.entity.res.HttpResult;
-import com.hxb.wan.android.mvp.model.entity.res.WxArticleDataBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectDataBean;
 import com.hxb.wan.android.mvp.model.entity.res.WxProjectListData;
+import com.hxb.wan.android.mvp.model.imodel.INewProjectModel;
 import com.hxb.wan.android.mvp.presenter.base.BasePresenter;
 import com.hxb.wan.android.mvp.view.iview.INewProjectView;
-import com.hxb.wan.android.mvp.model.imodel.INewProjectModel;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.HttpNetObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
@@ -19,11 +16,7 @@ import com.ljy.devring.util.RxLifecycleUtil;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zhouyou.recyclerview.adapter.HelperStateRecyclerViewAdapter;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
 public class NewProjectPresenter extends BasePresenter<INewProjectView, INewProjectModel> {
 

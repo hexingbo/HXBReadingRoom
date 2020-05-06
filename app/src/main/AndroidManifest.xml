@@ -13,6 +13,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".mvp.view.activity.PublicAccountActivity" />
+        <activity android:name=".mvp.view.activity.ProjectHallActivity" />
+        <activity android:name=".mvp.view.activity.NavigateMenuActivity" />
+        <activity android:name=".mvp.view.activity.KnowledgeSystemActivity" />
         <activity android:name=".mvp.view.activity.WebViewActivity" />
         <activity android:name=".mvp.view.activity.MyCollectedManageActivity" />
         <activity android:name=".mvp.view.activity.AboutUsActivity" />

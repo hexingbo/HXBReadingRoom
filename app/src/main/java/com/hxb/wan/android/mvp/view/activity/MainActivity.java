@@ -32,6 +32,7 @@ import com.hxb.wan.android.mvp.view.iview.IMainView;
 import com.hxb.wan.android.utils.GlideImageLoader;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.LoadOption;
+import com.ljy.devring.other.RingLog;
 import com.ljy.devring.util.AppManagerUtil;
 import com.ljy.devring.util.RingToast;
 import com.youth.banner.Banner;
@@ -291,18 +292,23 @@ public class MainActivity extends BaseActivity<MainPresenter> implements IMainVi
                         break;
                     case R.id.nav_item_daohang:
                         //导航菜单
+                        RingLog.e("menuvalue："+menuItem.getTitle());
+                        AppManagerUtil.jump(NavigateMenuActivity.class,NavigateMenuActivity.strBundle,menuItem.getTitle()+"");
                         break;
                     case R.id.nav_item_xiangmu:
                         //项目大厅
+                        AppManagerUtil.jump(ProjectHallActivity.class);
                         break;
                     case R.id.nav_item_tixi:
                         //知识体系
+                        AppManagerUtil.jump(KnowledgeSystemActivity.class);
                         break;
                     case R.id.nav_item_gongjulan:
                         //常用工具
                         break;
                     case R.id.nav_item_gongzhonghao:
                         //公众号
+                        AppManagerUtil.jump(PublicAccountActivity.class);
                         break;
                     case R.id.nav_item_wenda:
                         //问答交流
